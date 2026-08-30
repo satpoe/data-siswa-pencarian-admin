@@ -9,9 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -351,7 +349,6 @@ Keluar
 
 <h2>👨‍🏫 Dashboard Admin</h2>
 
-
 <div class="stats">
 
 <div class="stat">
@@ -376,7 +373,6 @@ Kelas
 
 </div>
 
-
 <hr>
 
 <h3>Data Siswa</h3>
@@ -390,7 +386,6 @@ placeholder="🔎 Cari nama, NISN, atau kelas..."
 <div id="list">
 Memuat...
 </div>
-
 
 <hr>
 
@@ -427,7 +422,6 @@ Memuat...
 
 </div>
 
-
 <div>
 
 <label>Tempat/Tanggal Lahir</label>
@@ -446,7 +440,6 @@ Memuat...
 
 </div>
 
-
 <div class="grid">
 
 <div>
@@ -462,7 +455,6 @@ Memuat...
 
 </div>
 
-
 <div>
 
 <label>Izin</label>
@@ -477,7 +469,6 @@ Memuat...
 </div>
 
 </div>
-
 
 <div class="actions">
 
@@ -495,9 +486,6 @@ Bersihkan
 
 <div id="ok" class="ok"></div>
 
-
-<!-- FORM TAḤFIZ -->
-
 <hr>
 
 <h3>
@@ -513,7 +501,6 @@ Pilih siswa lalu masukkan laporan hafalannya.
 <select id="tahfizSiswa">
 <option value="">-- Pilih Siswa --</option>
 </select>
-
 
 <label>Bulan</label>
 
@@ -535,14 +522,12 @@ Pilih siswa lalu masukkan laporan hafalannya.
 
 </select>
 
-
 <label>Juz</label>
 
 <input
 id="tahfizJus"
 placeholder="Contoh: 30"
 >
-
 
 <label>Surah</label>
 
@@ -551,14 +536,12 @@ id="tahfizSurah"
 placeholder="Contoh: An-Naba - Abasa"
 >
 
-
 <label>Ayat</label>
 
 <input
 id="tahfizAyat"
 placeholder="Contoh: 1-20"
 >
-
 
 <label>Keterangan</label>
 
@@ -567,7 +550,6 @@ id="tahfizKeterangan"
 rows="3"
 placeholder="Contoh: Lancar"
 ></textarea>
-
 
 <div class="actions">
 
@@ -584,7 +566,6 @@ Bersihkan
 <div id="te" class="error"></div>
 
 <div id="tok" class="ok"></div>
-
 
 <hr>
 
@@ -609,7 +590,6 @@ const db = window.supabase.createClient(
 );
 
 let students = [];
-
 
 const $ = id => document.getElementById(id);
 
@@ -656,22 +636,17 @@ loadAdmin();
 async function waliLogin(){
 
 let e = $('we');
-
 let r = $('wresult');
 
 e.style.display='none';
-
 r.innerHTML='';
 
 let name = v('wnama');
-
 let pin = v('wpin');
-
 
 if(!name || !pin){
 
 e.style.display='block';
-
 e.textContent='Nama dan PIN wajib diisi.';
 
 return;
@@ -679,7 +654,10 @@ return;
 }
 
 
-/* Cari data siswa */
+/*
+   CARI DATA SISWA
+   Tetap menggunakan fungsi cari_data_wali
+*/
 
 let {data,error} =
 await db.rpc(
@@ -690,14 +668,11 @@ p_pin:pin
 }
 );
 
-
 let x = data && data[0];
-
 
 if(error || !x){
 
 e.style.display='block';
-
 e.textContent='Nama atau PIN salah.';
 
 return;
@@ -706,32 +681,25 @@ return;
 
 
 /*
-PENTING:
-fungsi cari_data_wali harus mengembalikan kolom id.
+   LAPORAN TAHFIZ SEKARANG DIAMBIL
+   MENGGUNAKAN RPC YANG SUDAH KITA BUAT.
+   
+   Jadi tidak lagi:
+   .from('tahfiz')
+   
+   yang sebelumnya bisa gagal karena RLS.
 */
-
-if(!x.id){
-
-e.style.display='block';
-
-e.textContent=
-'Data siswa ditemukan, tetapi ID siswa tidak ditemukan. Fungsi cari_data_wali harus mengembalikan kolom id.';
-
-return;
-
-}
-
-
-/* Ambil laporan Tahfiz */
 
 let {
 data:tahfiz,
 error:tahfizError
-} = await db
-.from('tahfiz')
-.select('id,siswa_id,bulan,jus,surah,ayat,keterangan')
-.eq('siswa_id',x.id)
-.order('id',{ascending:false});
+} = await db.rpc(
+'cari_tahfiz_wali',
+{
+p_nama:name,
+p_pin:pin
+}
+);
 
 
 let laporanHTML='';
@@ -756,7 +724,7 @@ laporanHTML=`
 
 <div class="empty">
 
-Belum ada laporan tahfiz.
+📖 Belum ada laporan tahfiz.
 
 </div>
 
@@ -775,19 +743,31 @@ laporanHTML = tahfiz.map(t=>`
 </div>
 
 <div class="tahfiz-item">
-<b>Juz:</b> ${safe(t.jus || '-')}
+
+<b>Juz:</b>
+${safe(t.jus || '-')}
+
 </div>
 
 <div class="tahfiz-item">
-<b>Surah:</b> ${safe(t.surah || '-')}
+
+<b>Surah:</b>
+${safe(t.surah || '-')}
+
 </div>
 
 <div class="tahfiz-item">
-<b>Ayat:</b> ${safe(t.ayat || '-')}
+
+<b>Ayat:</b>
+${safe(t.ayat || '-')}
+
 </div>
 
 <div class="tahfiz-item">
-<b>Keterangan:</b> ${safe(t.keterangan || '-')}
+
+<b>Keterangan:</b>
+${safe(t.keterangan || '-')}
+
 </div>
 
 </div>
@@ -797,7 +777,10 @@ laporanHTML = tahfiz.map(t=>`
 }
 
 
-/* Tampilkan data siswa */
+/*
+   TAMPILKAN DATA SISWA
+   Nilai rata-rata sengaja TIDAK ditampilkan.
+*/
 
 r.innerHTML=`
 
@@ -847,7 +830,6 @@ ${safe(x.ibu)}
 
 </div>
 
-
 <div>
 
 ${x.foto ? `
@@ -859,7 +841,6 @@ alt="Foto siswa"
 >
 
 ` : ''}
-
 
 <h3>
 📅 Kehadiran
@@ -883,9 +864,7 @@ ${safe(x.alpa || 0)}
 
 </div>
 
-
 <hr>
-
 
 <h2 class="tahfiz-title">
 📖 Laporan Tahfiz
@@ -893,9 +872,7 @@ ${safe(x.alpa || 0)}
 
 ${laporanHTML}
 
-
 <hr>
-
 
 <h3>
 📝 Catatan Wali Kelas
@@ -926,7 +903,6 @@ email:v('email'),
 password:$('password').value
 
 });
-
 
 if(error){
 
@@ -969,7 +945,6 @@ await db
 .select('*')
 .order('nama');
 
-
 if(error){
 
 $('list').innerHTML=
@@ -982,7 +957,6 @@ safe(error.message)
 return;
 
 }
-
 
 students=data || [];
 
@@ -1004,14 +978,12 @@ function renderStudents(){
 let q =
 v('search').toLowerCase();
 
-
 let a =
 students.filter(s=>
 (s.nama||'').toLowerCase().includes(q) ||
 (s.nisn||'').toLowerCase().includes(q) ||
 (s.kelas||'').toLowerCase().includes(q)
 );
-
 
 $('list').innerHTML=
 
@@ -1132,7 +1104,6 @@ students.find(x=>x.id===id);
 
 if(!s)return;
 
-
 [
 'sid',
 'nama',
@@ -1160,10 +1131,8 @@ $(id).value=s[id]??'';
 
 });
 
-
 $('formtitle').textContent=
 '✏️ Edit Data: '+s.nama;
-
 
 scrollTo({
 top:document.body.scrollHeight,
@@ -1199,7 +1168,6 @@ catatan:v('catatan')
 
 };
 
-
 if(!p.nama || !p.pin){
 
 $('ae').style.display='block';
@@ -1210,7 +1178,6 @@ $('ae').textContent=
 return;
 
 }
-
 
 let id=v('sid');
 
@@ -1226,7 +1193,6 @@ await db
 .from('siswa')
 .insert(p);
 
-
 if(res.error){
 
 $('ae').style.display='block';
@@ -1237,7 +1203,6 @@ res.error.message;
 return;
 
 }
-
 
 $('ae').style.display='none';
 
@@ -1262,13 +1227,11 @@ async function deleteStudent(id){
 if(!confirm('Hapus data siswa ini?'))
 return;
 
-
 let {error} =
 await db
 .from('siswa')
 .delete()
 .eq('id',id);
-
 
 if(error)
 alert(error.message);
@@ -1279,7 +1242,7 @@ loadAdmin();
 
 
 /* =========================
-   PILIH SISWA TAḤFIZ
+   PILIH SISWA TAHFIZ
 ========================= */
 
 function loadStudentSelect(){
@@ -1301,7 +1264,7 @@ ${safe(s.nama)} - ${safe(s.kelas)}
 
 
 /* =========================
-   SIMPAN TAḤFIZ
+   SIMPAN TAHFIZ
 ========================= */
 
 async function saveTahfiz(){
@@ -1309,7 +1272,6 @@ async function saveTahfiz(){
 let e=$('te');
 
 e.style.display='none';
-
 
 let siswa_id=
 v('tahfizSiswa');
@@ -1329,7 +1291,6 @@ v('tahfizAyat');
 let keterangan=
 v('tahfizKeterangan');
 
-
 if(!siswa_id || !bulan){
 
 e.style.display='block';
@@ -1340,7 +1301,6 @@ e.textContent=
 return;
 
 }
-
 
 let data={
 
@@ -1358,12 +1318,10 @@ keterangan:keterangan
 
 };
 
-
 let {error} =
 await db
 .from('tahfiz')
 .insert(data);
-
 
 if(error){
 
@@ -1376,12 +1334,10 @@ return;
 
 }
 
-
 $('tok').style.display='block';
 
 $('tok').textContent=
 'Laporan Tahfiz berhasil disimpan.';
-
 
 loadTahfizAdmin(siswa_id);
 
@@ -1391,26 +1347,22 @@ clearTahfizForm();
 
 
 /* =========================
-   BERSIHKAN FORM TAḤFIZ
+   BERSIHKAN FORM TAHFIZ
 ========================= */
 
 function clearTahfizForm(){
 
 $('tahfizBulan').value='';
-
 $('tahfizJus').value='';
-
 $('tahfizSurah').value='';
-
 $('tahfizAyat').value='';
-
 $('tahfizKeterangan').value='';
 
 }
 
 
 /* =========================
-   LIHAT TAḤFIZ ADMIN
+   LIHAT TAHFIZ ADMIN
 ========================= */
 
 $('tahfizSiswa').addEventListener(
@@ -1443,7 +1395,6 @@ await db
 .eq('siswa_id',Number(siswaId))
 .order('id',{ascending:false});
 
-
 if(error){
 
 $('adminTahfizList').innerHTML=
@@ -1456,7 +1407,6 @@ return;
 
 }
 
-
 if(!data || data.length===0){
 
 $('adminTahfizList').innerHTML=
@@ -1468,7 +1418,6 @@ $('adminTahfizList').innerHTML=
 return;
 
 }
-
 
 $('adminTahfizList').innerHTML=
 
@@ -1516,7 +1465,7 @@ Hapus
 
 
 /* =========================
-   HAPUS TAḤFIZ
+   HAPUS TAHFIZ
 ========================= */
 
 async function deleteTahfiz(id,siswaId){
@@ -1524,13 +1473,11 @@ async function deleteTahfiz(id,siswaId){
 if(!confirm('Hapus laporan Tahfiz ini?'))
 return;
 
-
 let {error} =
 await db
 .from('tahfiz')
 .delete()
 .eq('id',id);
-
 
 if(error){
 
@@ -1539,7 +1486,6 @@ alert(error.message);
 return;
 
 }
-
 
 loadTahfizAdmin(siswaId);
 
