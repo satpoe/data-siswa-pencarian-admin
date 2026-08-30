@@ -1,33 +1,1510 @@
-<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Portal Data Siswa - SDIT An-Nahl</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Data Siswa - SDIT An-Nahl</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f3f7f5;color:#24332d}header{background:#176b52;color:white;padding:38px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:190px}h1{margin:0 0 10px;text-align:center;font-size:30px;letter-spacing:.3px}.wrap{max-width:1050px;margin:24px auto;padding:0 15px}.card{background:white;border-radius:15px;padding:22px;margin-bottom:18px;box-shadow:0 3px 16px #0001}button{border:0;border-radius:8px;padding:11px 16px;background:#176b52;color:white;cursor:pointer;font-weight:bold}button.gray{background:#68756f}button.red{background:#b42318}button.small{padding:7px 10px;font-size:12px}input,select,textarea{width:100%;padding:11px;border:1px solid #d7e0dc;border-radius:8px;margin:5px 0 12px;font-size:15px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{padding:15px;background:#edf7f2;border-radius:10px}.stat b{font-size:22px;display:block;color:#176b52}.hidden{display:none}.error{display:none;background:#fff0f0;color:#a61b1b;padding:11px;border-radius:8px;margin:12px 0}.ok{display:none;background:#edf9f3;color:#176b52;padding:11px;border-radius:8px;margin:12px 0}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid #eee;text-align:left;font-size:14px}.badge{display:inline-block;background:#e5f3ed;color:#176b52;padding:5px 9px;border-radius:20px;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}.photo{width:110px;height:110px;border-radius:12px;object-fit:cover;background:#e7eeeb}.notice{padding:12px;border-left:4px solid #176b52;background:#f5faf8;margin:8px 0}@media(max-width:700px){.grid,.stats{grid-template-columns:1fr 1fr}}@media(max-width:480px){.grid,.stats{grid-template-columns:1fr}}
-</style></head><body>
-<header><h1>🏫 Data Siswa</h1><div>SDIT AN-NAHL SERI KUALA LOBAM</div></header><div class="wrap">
-<div id="home" class="card" style="text-align:center"><h2>Selamat Datang</h2><p>Silakan pilih akses.</p><div class="actions" style="justify-content:center"><button onclick="show('wali')">🔎 Pencarian</button><button onclick="show('login')">👨‍🏫 Admin</button></div></div>
-<div id="wali" class="card hidden"><button class="gray" onclick="show('home')">← Kembali</button><h2>Pencarian</h2><p>Masukkan nama anak dan PIN dari sekolah.</p><input id="wnama" placeholder="Nama lengkap anak"><input id="wpin" type="password" inputmode="numeric" placeholder="PIN"><button onclick="waliLogin()">Lihat Data Anak</button><div id="we" class="error"></div><div id="wresult"></div></div>
-<div id="login" class="card hidden"><button class="gray" onclick="show('home')">← Kembali</button><h2>Login Admin</h2><input id="email" type="email" placeholder="Email admin"><input id="password" type="password" placeholder="Password"><button onclick="adminLogin()">Login</button><div id="le" class="error"></div></div>
-<div id="admin" class="card hidden"><div class="actions"><button onclick="logout()">Keluar</button><button class="gray" onclick="loadAdmin()">↻ Refresh</button></div><h2>👨‍🏫 Dashboard Admin</h2>
-<div class="stats"><div class="stat"><b id="total">0</b>Total Siswa</div><div class="stat"><b id="laki">0</b>Laki-laki</div><div class="stat"><b id="perempuan">0</b>Perempuan</div><div class="stat"><b id="kelascount">0</b>Kelas</div></div>
-<hr><h3>Data Siswa</h3><input id="search" oninput="renderStudents()" placeholder="🔎 Cari nama, NISN, atau kelas..."><div id="list">Memuat...</div>
-<hr><h3 id="formtitle">➕ Tambah / Edit Siswa</h3><input type="hidden" id="sid"><div class="grid">
-<div><label>Nama *</label><input id="nama"><label>NISN</label><input id="nisn"><label>Kelas</label><input id="kelas"><label>Jenis Kelamin</label><select id="jk"><option>Laki-laki</option><option>Perempuan</option></select><label>PIN Wali *</label><input id="pin" inputmode="numeric"></div>
-<div><label>Tempat/Tanggal Lahir</label><input id="ttl"><label>Alamat</label><input id="alamat"><label>Nama Ayah</label><input id="ayah"><label>Nama Ibu</label><input id="ibu"></div></div>
-<div class="grid"><div><label>Nilai Rata-rata</label><input id="nilai" type="number"><label>Hadir</label><input id="hadir" type="number" value="0"><label>Sakit</label><input id="sakit" type="number" value="0"></div><div><label>Izin</label><input id="izin" type="number" value="0"><label>Alpa</label><input id="alpa" type="number" value="0"><label>Catatan Wali Kelas</label><textarea id="catatan" rows="4"></textarea></div></div>
-<div class="actions"><button onclick="saveStudent()">💾 Simpan</button><button class="gray" onclick="clearForm()">Bersihkan</button></div><div id="ae" class="error"></div><div id="ok" class="ok"></div>
-</div></div><script>
-const db=window.supabase.createClient("https://uepbvyzqrhhvgzktxkmg.supabase.co","sb_publishable_WBsGgAeaYivEAv7xL7qF_A_ilXHg2X-");let students=[];
-const $=id=>document.getElementById(id),v=id=>$(id).value.trim(),num=id=>v(id)===''?0:Number(v(id));
-function safe(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function show(id){['home','wali','login','admin'].forEach(x=>$(x).classList.add('hidden'));$(id).classList.remove('hidden');if(id==='admin')loadAdmin()}
-async function waliLogin(){let e=$('we'),r=$('wresult');e.style.display='none';r.innerHTML='';let name=v('wnama'),pin=v('wpin');if(!name||!pin){e.style.display='block';e.textContent='Nama dan PIN wajib diisi.';return}let {data,error}=await db.rpc('cari_data_wali',{p_nama:name,p_pin:pin});let x=data&&data[0];if(error||!x){e.style.display='block';e.textContent='Nama atau PIN salah.';return}r.innerHTML=`<div class="card"><div class="grid"><div><h2>👦 ${safe(x.nama)}</h2><span class="badge">${safe(x.kelas)}</span><p><b>NISN:</b> ${safe(x.nisn)}</p><p><b>Jenis Kelamin:</b> ${safe(x.jk)}</p><p><b>TTL:</b> ${safe(x.ttl)}</p><p><b>Alamat:</b> ${safe(x.alamat)}</p><p><b>Ayah:</b> ${safe(x.ayah)}</p><p><b>Ibu:</b> ${safe(x.ibu)}</p></div><div>${x.foto?`<img class="photo" src="${safe(x.foto)}">`:''}<h3>📊 Nilai & Kehadiran</h3><p><b>Nilai rata-rata:</b> ${safe(x.nilai)}</p><p>Hadir: ${safe(x.hadir)} • Sakit: ${safe(x.sakit)} • Izin: ${safe(x.izin)} • Alpa: ${safe(x.alpa)}</p><h3>📝 Catatan</h3><p>${safe(x.catatan||'-')}</p></div></div></div>`;loadNotices('wresult')}
-async function adminLogin(){let {error}=await db.auth.signInWithPassword({email:v('email'),password:$('password').value});if(error){$('le').style.display='block';$('le').textContent=error.message;return}$('le').style.display='none';show('admin')}
-async function logout(){await db.auth.signOut();show('home')}
-async function loadAdmin(){let {data,error}=await db.from('siswa').select('*').order('nama');if(error){$('list').innerHTML='<div class="error" style="display:block">'+safe(error.message)+'</div>';return}students=data||[];renderStudents();updateStats()}
-function renderStudents(){let q=v('search').toLowerCase(),a=students.filter(s=>(s.nama||'').toLowerCase().includes(q)||(s.nisn||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q));$('list').innerHTML='<table><tr><th>No</th><th>Nama</th><th>NISN</th><th>Kelas</th><th>Aksi</th></tr>'+a.map((s,i)=>`<tr><td>${i+1}</td><td>${safe(s.nama)}</td><td>${safe(s.nisn)}</td><td>${safe(s.kelas)}</td><td><button class="small" onclick="editStudent(${s.id})">Edit</button> <button class="small red" onclick="deleteStudent(${s.id})">Hapus</button></td></tr>`).join('')+'</table>'}
-function updateStats(){$('total').textContent=students.length;$('laki').textContent=students.filter(x=>x.jk==='Laki-laki').length;$('perempuan').textContent=students.filter(x=>x.jk==='Perempuan').length;$('kelascount').textContent=new Set(students.map(x=>x.kelas).filter(Boolean)).size}
-function clearForm(){['sid','nama','nisn','kelas','pin','ttl','alamat','ayah','ibu','nilai','hadir','sakit','izin','alpa','catatan'].forEach(id=>$(id).value='');['hadir','sakit','izin','alpa'].forEach(id=>$(id).value=0);$('formtitle').textContent='➕ Tambah / Edit Siswa'}
-function editStudent(id){let s=students.find(x=>x.id===id);if(!s)return;['sid','nama','nisn','kelas','jk','pin','ttl','alamat','ayah','ibu','nilai','hadir','sakit','izin','alpa','catatan'].forEach(id=>{if(s[id]!==undefined)$(id).value=s[id]??''});$('formtitle').textContent='✏️ Edit Data: '+s.nama;scrollTo({top:document.body.scrollHeight,behavior:'smooth'})}
-async function saveStudent(){let p={nama:v('nama'),nisn:v('nisn'),kelas:v('kelas'),jk:v('jk'),pin:v('pin'),ttl:v('ttl'),alamat:v('alamat'),ayah:v('ayah'),ibu:v('ibu'),nilai:num('nilai'),hadir:num('hadir'),sakit:num('sakit'),izin:num('izin'),alpa:num('alpa'),catatan:v('catatan')};if(!p.nama||!p.pin){$('ae').style.display='block';$('ae').textContent='Nama dan PIN wajib diisi.';return}let id=v('sid'),res=id?await db.from('siswa').update(p).eq('id',id):await db.from('siswa').insert(p);if(res.error){$('ae').style.display='block';$('ae').textContent=res.error.message;return}$('ae').style.display='none';$('ok').style.display='block';$('ok').textContent='Data berhasil disimpan online.';clearForm();loadAdmin()}
-async function deleteStudent(id){if(!confirm('Hapus data siswa ini?'))return;let {error}=await db.from('siswa').delete().eq('id',id);if(error)alert(error.message);else loadAdmin()}
-</script></body></html>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f3f7f5;
+  color:#24332d;
+}
+
+header{
+  background:#176b52;
+  color:white;
+  padding:28px 20px 32px;
+  text-align:center;
+  min-height:210px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+}
+
+.logo-header{
+  width:78px;
+  height:78px;
+  object-fit:contain;
+  background:white;
+  border-radius:50%;
+  padding:6px;
+  margin-bottom:10px;
+  box-shadow:0 4px 15px #0003;
+}
+
+h1{
+  margin:0 0 8px;
+  font-size:30px;
+}
+
+.school-name{
+  font-size:16px;
+}
+
+.wrap{
+  max-width:1050px;
+  margin:25px auto;
+  padding:0 15px;
+}
+
+.card{
+  background:white;
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:18px;
+  box-shadow:0 4px 18px #00000012;
+}
+
+.logo-card{
+  width:90px;
+  height:90px;
+  object-fit:contain;
+  background:#fff;
+  border-radius:50%;
+  padding:7px;
+  box-shadow:0 3px 12px #0002;
+  margin-bottom:10px;
+}
+
+h2{
+  color:#17382d;
+}
+
+button{
+  border:0;
+  border-radius:9px;
+  padding:11px 16px;
+  background:#176b52;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+button.gray{
+  background:#68756f;
+}
+
+button.red{
+  background:#b42318;
+}
+
+button.small{
+  padding:7px 10px;
+  font-size:12px;
+}
+
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  border:1px solid #d7e0dc;
+  border-radius:9px;
+  margin:5px 0 12px;
+  font-size:15px;
+  outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+  border-color:#176b52;
+  box-shadow:0 0 0 3px #176b5215;
+}
+
+label{
+  font-weight:bold;
+  font-size:14px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+}
+
+.hidden{
+  display:none;
+}
+
+.error{
+  display:none;
+  background:#fff0f0;
+  color:#a61b1b;
+  padding:11px;
+  border-radius:8px;
+  margin:12px 0;
+}
+
+.ok{
+  display:none;
+  background:#edf9f3;
+  color:#176b52;
+  padding:11px;
+  border-radius:8px;
+  margin:12px 0;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:10px;
+}
+
+th{
+  background:#176b52;
+  color:white;
+}
+
+th,td{
+  padding:10px;
+  border-bottom:1px solid #eee;
+  text-align:left;
+  font-size:14px;
+}
+
+.badge{
+  display:inline-block;
+  background:#e5f3ed;
+  color:#176b52;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+.student-box{
+  background:#f8fbfa;
+  border:1px solid #e1ebe7;
+  border-radius:14px;
+  padding:20px;
+  margin-top:18px;
+}
+
+.student-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:20px;
+}
+
+.photo{
+  width:110px;
+  height:110px;
+  border-radius:12px;
+  object-fit:cover;
+  background:#e7eeeb;
+}
+
+.tahfiz-box{
+  margin-top:22px;
+  border-top:1px solid #e5ebe8;
+  padding-top:18px;
+}
+
+.tahfiz-title{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:12px;
+}
+
+.empty{
+  padding:18px;
+  text-align:center;
+  background:#f7faf8;
+  border-radius:10px;
+  color:#68756f;
+}
+
+.stat-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.stat{
+  padding:16px;
+  background:#edf7f2;
+  border-radius:10px;
+}
+
+.stat b{
+  font-size:22px;
+  display:block;
+  color:#176b52;
+  margin-bottom:4px;
+}
+
+.section-title{
+  margin-top:25px;
+  border-bottom:1px solid #e5ebe8;
+  padding-bottom:10px;
+}
+
+@media(max-width:700px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+
+  .student-top{
+    flex-direction:column;
+  }
+
+  .stat-grid{
+    grid-template-columns:1fr;
+  }
+
+  table{
+    display:block;
+    overflow-x:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img class="logo-header" src="logo.jpeg" alt="Logo SDIT An-Nahl">
+  <h1>Data Siswa</h1>
+  <div class="school-name">SDIT AN-NAHL SERI KUALA LOBAM</div>
+</header>
+
+<div class="wrap">
+
+<!-- HOME -->
+<div id="home" class="card" style="text-align:center">
+
+  <img class="logo-card" src="logo.jpeg" alt="Logo sekolah">
+
+  <h2>Selamat Datang</h2>
+
+  <p>Portal Data Siswa dan Laporan Tahfiz</p>
+
+  <div class="actions" style="justify-content:center">
+    <button onclick="show('wali')">🔎 Pencarian Wali</button>
+    <button onclick="show('login')">👨‍🏫 Admin</button>
+  </div>
+
+</div>
+
+
+<!-- WALI -->
+<div id="wali" class="card hidden">
+
+  <button class="gray" onclick="show('home')">← Kembali</button>
+
+  <div style="text-align:center;margin-top:15px">
+    <img class="logo-card" src="logo.jpeg" alt="Logo sekolah">
+  </div>
+
+  <h2>Pencarian Data Anak</h2>
+
+  <p>Masukkan nama anak dan PIN dari sekolah.</p>
+
+  <input id="wnama" placeholder="Nama lengkap anak">
+
+  <input
+    id="wpin"
+    type="password"
+    inputmode="numeric"
+    placeholder="PIN"
+  >
+
+  <button onclick="waliLogin()">Lihat Data Anak</button>
+
+  <div id="we" class="error"></div>
+
+  <div id="wresult"></div>
+
+</div>
+
+
+<!-- LOGIN ADMIN -->
+<div id="login" class="card hidden">
+
+  <button class="gray" onclick="show('home')">← Kembali</button>
+
+  <div style="text-align:center;margin-top:15px">
+    <img class="logo-card" src="logo.jpeg" alt="Logo sekolah">
+  </div>
+
+  <h2>Login Admin</h2>
+
+  <input
+    id="email"
+    type="email"
+    placeholder="Email admin"
+  >
+
+  <input
+    id="password"
+    type="password"
+    placeholder="Password"
+  >
+
+  <button onclick="adminLogin()">Login</button>
+
+  <div id="le" class="error"></div>
+
+</div>
+
+
+<!-- ADMIN -->
+<div id="admin" class="card hidden">
+
+  <div class="actions">
+    <button onclick="logout()">Keluar</button>
+    <button class="gray" onclick="loadAdmin()">↻ Refresh</button>
+  </div>
+
+  <div style="text-align:center;margin-top:18px">
+    <img class="logo-card" src="logo.jpeg" alt="Logo sekolah">
+    <h2>Dashboard Admin</h2>
+  </div>
+
+
+  <!-- STATISTIK -->
+  <div class="stat-grid">
+
+    <div class="stat">
+      <b id="total">0</b>
+      Total Siswa
+    </div>
+
+    <div class="stat">
+      <b id="laki">0</b>
+      Laki-laki
+    </div>
+
+    <div class="stat">
+      <b id="perempuan">0</b>
+      Perempuan
+    </div>
+
+  </div>
+
+
+  <!-- DATA SISWA -->
+  <h3 class="section-title">👨‍🎓 Data Siswa</h3>
+
+  <input
+    id="search"
+    oninput="renderStudents()"
+    placeholder="🔎 Cari nama, NISN, atau kelas..."
+  >
+
+  <div id="list">Memuat...</div>
+
+
+  <!-- FORM SISWA -->
+  <h3 class="section-title" id="formtitle">
+    ➕ Tambah / Edit Siswa
+  </h3>
+
+  <input type="hidden" id="sid">
+
+  <div class="grid">
+
+    <div>
+      <label>Nama *</label>
+      <input id="nama">
+
+      <label>NISN</label>
+      <input id="nisn">
+
+      <label>Kelas</label>
+      <input id="kelas">
+
+      <label>Jenis Kelamin</label>
+      <select id="jk">
+        <option>Laki-laki</option>
+        <option>Perempuan</option>
+      </select>
+
+      <label>PIN Wali *</label>
+      <input id="pin" inputmode="numeric">
+    </div>
+
+    <div>
+      <label>Tempat/Tanggal Lahir</label>
+      <input id="ttl">
+
+      <label>Alamat</label>
+      <input id="alamat">
+
+      <label>Nama Ayah</label>
+      <input id="ayah">
+
+      <label>Nama Ibu</label>
+      <input id="ibu">
+
+      <label>Foto</label>
+      <input id="foto" placeholder="URL foto (opsional)">
+    </div>
+
+  </div>
+
+  <label>Hadir</label>
+  <input id="hadir" type="number" value="0">
+
+  <label>Sakit</label>
+  <input id="sakit" type="number" value="0">
+
+  <label>Izin</label>
+  <input id="izin" type="number" value="0">
+
+  <label>Alpa</label>
+  <input id="alpa" type="number" value="0">
+
+  <label>Catatan Wali Kelas</label>
+  <textarea id="catatan" rows="4"></textarea>
+
+  <div class="actions">
+    <button onclick="saveStudent()">💾 Simpan Siswa</button>
+    <button class="gray" onclick="clearForm()">Bersihkan</button>
+  </div>
+
+  <div id="ae" class="error"></div>
+  <div id="ok" class="ok"></div>
+
+
+  <!-- TAHFIZ -->
+  <h3 class="section-title">
+    📖 Laporan Tahfiz
+  </h3>
+
+  <p>
+    Tambahkan perkembangan hafalan siswa berdasarkan bulan.
+  </p>
+
+  <input type="hidden" id="tid">
+
+  <label>Pilih Siswa *</label>
+  <select id="tsiswa">
+    <option value="">-- Pilih siswa --</option>
+  </select>
+
+  <div class="grid">
+
+    <div>
+
+      <label>Bulan *</label>
+
+      <select id="tbulan">
+        <option value="">-- Pilih bulan --</option>
+        <option>Januari</option>
+        <option>Februari</option>
+        <option>Maret</option>
+        <option>April</option>
+        <option>Mei</option>
+        <option>Juni</option>
+        <option>Juli</option>
+        <option>Agustus</option>
+        <option>September</option>
+        <option>Oktober</option>
+        <option>November</option>
+        <option>Desember</option>
+      </select>
+
+      <label>Juz</label>
+      <input id="tjus" placeholder="Contoh: 30">
+
+      <label>Surah</label>
+      <input id="tsurah" placeholder="Contoh: An-Nas">
+
+    </div>
+
+    <div>
+
+      <label>Ayat</label>
+      <input id="tayat" placeholder="Contoh: 1-6">
+
+      <label>Keterangan</label>
+      <textarea
+        id="tketerangan"
+        rows="6"
+        placeholder="Contoh: Lancar, perlu murojaah, sangat baik..."
+      ></textarea>
+
+    </div>
+
+  </div>
+
+  <div class="actions">
+    <button onclick="saveTahfiz()">📖 Simpan Tahfiz</button>
+    <button class="gray" onclick="clearTahfizForm()">Bersihkan</button>
+  </div>
+
+  <div id="te" class="error"></div>
+  <div id="tok" class="ok"></div>
+
+  <div id="tahfizAdminList" style="margin-top:20px">
+    Pilih siswa untuk melihat laporan Tahfiz.
+  </div>
+
+</div>
+
+</div>
+
+
+<script>
+
+const db = window.supabase.createClient(
+  "https://uepbvyzqrhhvgzktxkmg.supabase.co",
+  "sb_publishable_WBsGgAeaYivEAv7xL7qF_A_ilXHg2X-"
+);
+
+let students = [];
+
+const $ = id => document.getElementById(id);
+
+const v = id => $(id).value.trim();
+
+const num = id =>
+  v(id) === '' ? 0 : Number(v(id));
+
+
+function safe(x){
+  return String(x ?? '').replace(
+    /[&<>"']/g,
+    m => ({
+      '&':'&amp;',
+      '<':'&lt;',
+      '>':'&gt;',
+      '"':'&quot;',
+      "'":'&#39;'
+    }[m])
+  );
+}
+
+
+function show(id){
+
+  ['home','wali','login','admin'].forEach(
+    x => $(x).classList.add('hidden')
+  );
+
+  $(id).classList.remove('hidden');
+
+  if(id === 'admin'){
+    loadAdmin();
+  }
+}
+
+
+/* =========================
+   LOGIN WALI
+========================= */
+
+async function waliLogin(){
+
+  let e = $('we');
+  let r = $('wresult');
+
+  e.style.display = 'none';
+  r.innerHTML = '';
+
+  let name = v('wnama');
+  let pin = v('wpin');
+
+  if(!name || !pin){
+
+    e.style.display = 'block';
+    e.textContent = 'Nama dan PIN wajib diisi.';
+    return;
+  }
+
+  let {data,error} = await db.rpc(
+    'cari_data_wali',
+    {
+      p_nama:name,
+      p_pin:pin
+    }
+  );
+
+  let x = data && data[0];
+
+  if(error || !x){
+
+    e.style.display = 'block';
+    e.textContent = 'Nama atau PIN salah.';
+    return;
+  }
+
+
+  let tahfiz = await getTahfizWali(name,pin);
+
+
+  r.innerHTML = `
+
+    <div class="student-box">
+
+      <div class="student-top">
+
+        <div>
+
+          <h2 style="margin-top:0">
+            👦 ${safe(x.nama)}
+          </h2>
+
+          <span class="badge">
+            ${safe(x.kelas)}
+          </span>
+
+          <p><b>NISN:</b> ${safe(x.nisn)}</p>
+
+          <p>
+            <b>Jenis Kelamin:</b>
+            ${safe(x.jk)}
+          </p>
+
+          <p>
+            <b>TTL:</b>
+            ${safe(x.ttl)}
+          </p>
+
+          <p>
+            <b>Alamat:</b>
+            ${safe(x.alamat)}
+          </p>
+
+          <p>
+            <b>Ayah:</b>
+            ${safe(x.ayah)}
+          </p>
+
+          <p>
+            <b>Ibu:</b>
+            ${safe(x.ibu)}
+          </p>
+
+        </div>
+
+        <div>
+          ${
+            x.foto
+            ? `<img class="photo" src="${safe(x.foto)}" alt="Foto siswa">`
+            : `<img class="photo" src="logo.jpeg" alt="Logo sekolah">`
+          }
+        </div>
+
+      </div>
+
+
+      <div class="tahfiz-box">
+
+        <div class="tahfiz-title">
+          <h2 style="margin:0">
+            📖 Laporan Tahfiz
+          </h2>
+        </div>
+
+        ${
+          tahfiz.length
+          ? `
+
+          <div style="overflow-x:auto">
+
+            <table>
+
+              <tr>
+                <th>No</th>
+                <th>Bulan</th>
+                <th>Juz</th>
+                <th>Surah</th>
+                <th>Ayat</th>
+                <th>Keterangan</th>
+              </tr>
+
+              ${
+                tahfiz.map((t,i)=>`
+
+                  <tr>
+
+                    <td>${i+1}</td>
+
+                    <td>
+                      <b>${safe(t.bulan)}</b>
+                    </td>
+
+                    <td>${safe(t.jus)}</td>
+
+                    <td>${safe(t.surah)}</td>
+
+                    <td>${safe(t.ayat)}</td>
+
+                    <td>${safe(t.keterangan || '-')}</td>
+
+                  </tr>
+
+                `).join('')
+              }
+
+            </table>
+
+          </div>
+
+          `
+          :
+          `
+            <div class="empty">
+              📖 Belum ada laporan Tahfiz.
+            </div>
+          `
+        }
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+/* =========================
+   AMBIL TAHFIZ WALI
+========================= */
+
+async function getTahfizWali(name,pin){
+
+  let {data,error} = await db.rpc(
+    'cari_tahfiz_wali',
+    {
+      p_nama:name,
+      p_pin:pin
+    }
+  );
+
+  if(error){
+    console.error(error);
+    return [];
+  }
+
+  return data || [];
+}
+
+
+/* =========================
+   LOGIN ADMIN
+========================= */
+
+async function adminLogin(){
+
+  let {error} =
+    await db.auth.signInWithPassword({
+      email:v('email'),
+      password:$('password').value
+    });
+
+  if(error){
+
+    $('le').style.display = 'block';
+    $('le').textContent = error.message;
+
+    return;
+  }
+
+  $('le').style.display = 'none';
+
+  show('admin');
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+async function logout(){
+
+  await db.auth.signOut();
+
+  show('home');
+}
+
+
+/* =========================
+   LOAD DATA SISWA
+========================= */
+
+async function loadAdmin(){
+
+  let {
+    data,
+    error
+  } = await db
+    .from('siswa')
+    .select('*')
+    .order('nama');
+
+  if(error){
+
+    $('list').innerHTML =
+      '<div class="error" style="display:block">'+
+      safe(error.message)+
+      '</div>';
+
+    return;
+  }
+
+  students = data || [];
+
+  renderStudents();
+
+  updateStats();
+
+  loadStudentSelect();
+}
+
+
+/* =========================
+   DAFTAR SISWA
+========================= */
+
+function renderStudents(){
+
+  let q =
+    v('search').toLowerCase();
+
+  let a =
+    students.filter(s =>
+      (s.nama || '').toLowerCase().includes(q) ||
+      (s.nisn || '').toLowerCase().includes(q) ||
+      (s.kelas || '').toLowerCase().includes(q)
+    );
+
+
+  if(!a.length){
+
+    $('list').innerHTML =
+      '<div class="empty">Belum ada data siswa.</div>';
+
+    return;
+  }
+
+
+  $('list').innerHTML = `
+
+    <div style="overflow-x:auto">
+
+      <table>
+
+        <tr>
+          <th>No</th>
+          <th>Nama</th>
+          <th>NISN</th>
+          <th>Kelas</th>
+          <th>Aksi</th>
+        </tr>
+
+        ${
+          a.map((s,i)=>`
+
+            <tr>
+
+              <td>${i+1}</td>
+
+              <td>${safe(s.nama)}</td>
+
+              <td>${safe(s.nisn)}</td>
+
+              <td>${safe(s.kelas)}</td>
+
+              <td>
+
+                <button
+                  class="small"
+                  onclick="editStudent(${s.id})">
+                  Edit
+                </button>
+
+                <button
+                  class="small"
+                  onclick="chooseTahfizStudent(${s.id})">
+                  📖 Tahfiz
+                </button>
+
+                <button
+                  class="small red"
+                  onclick="deleteStudent(${s.id})">
+                  Hapus
+                </button>
+
+              </td>
+
+            </tr>
+
+          `).join('')
+        }
+
+      </table>
+
+    </div>
+  `;
+}
+
+
+/* =========================
+   STATISTIK
+========================= */
+
+function updateStats(){
+
+  $('total').textContent =
+    students.length;
+
+  $('laki').textContent =
+    students.filter(
+      x => x.jk === 'Laki-laki'
+    ).length;
+
+  $('perempuan').textContent =
+    students.filter(
+      x => x.jk === 'Perempuan'
+    ).length;
+}
+
+
+/* =========================
+   PILIH SISWA TAHFIZ
+========================= */
+
+function loadStudentSelect(){
+
+  $('tsiswa').innerHTML =
+    '<option value="">-- Pilih siswa --</option>' +
+
+    students.map(s =>
+      `<option value="${s.id}">
+        ${safe(s.nama)} - ${safe(s.kelas)}
+      </option>`
+    ).join('');
+}
+
+
+function chooseTahfizStudent(id){
+
+  $('tsiswa').value = String(id);
+
+  loadTahfizAdmin(id);
+
+  $('tbulan').focus();
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:'smooth'
+  });
+}
+
+
+$('tsiswa').addEventListener(
+  'change',
+  function(){
+
+    if(this.value){
+
+      loadTahfizAdmin(this.value);
+
+    }else{
+
+      $('tahfizAdminList').innerHTML =
+        'Pilih siswa untuk melihat laporan Tahfiz.';
+    }
+
+  }
+);
+
+
+/* =========================
+   FORM SISWA
+========================= */
+
+function clearForm(){
+
+  [
+    'sid',
+    'nama',
+    'nisn',
+    'kelas',
+    'pin',
+    'ttl',
+    'alamat',
+    'ayah',
+    'ibu',
+    'foto',
+    'hadir',
+    'sakit',
+    'izin',
+    'alpa',
+    'catatan'
+  ].forEach(id => {
+
+    if($(id)) $(id).value='';
+
+  });
+
+
+  ['hadir','sakit','izin','alpa']
+    .forEach(id => $(id).value=0);
+
+  $('jk').value='Laki-laki';
+
+  $('formtitle').textContent =
+    '➕ Tambah / Edit Siswa';
+}
+
+
+function editStudent(id){
+
+  let s =
+    students.find(x => x.id === id);
+
+  if(!s) return;
+
+
+  [
+    'sid',
+    'nama',
+    'nisn',
+    'kelas',
+    'jk',
+    'pin',
+    'ttl',
+    'alamat',
+    'ayah',
+    'ibu',
+    'foto',
+    'hadir',
+    'sakit',
+    'izin',
+    'alpa',
+    'catatan'
+  ].forEach(id => {
+
+    if($(id)){
+
+      $(id).value =
+        s[id] !== undefined
+        ? s[id] ?? ''
+        : '';
+
+    }
+
+  });
+
+
+  $('formtitle').textContent =
+    '✏️ Edit Data: ' + s.nama;
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:'smooth'
+  });
+}
+
+
+/* =========================
+   SIMPAN SISWA
+========================= */
+
+async function saveStudent(){
+
+  let p = {
+
+    nama:v('nama'),
+    nisn:v('nisn'),
+    kelas:v('kelas'),
+    jk:v('jk'),
+    pin:v('pin'),
+    ttl:v('ttl'),
+    alamat:v('alamat'),
+    ayah:v('ayah'),
+    ibu:v('ibu'),
+    foto:v('foto'),
+    hadir:num('hadir'),
+    sakit:num('sakit'),
+    izin:num('izin'),
+    alpa:num('alpa'),
+    catatan:v('catatan')
+
+  };
+
+
+  if(!p.nama || !p.pin){
+
+    $('ae').style.display='block';
+
+    $('ae').textContent =
+      'Nama dan PIN wajib diisi.';
+
+    return;
+  }
+
+
+  let id = v('sid');
+
+  let res = id
+
+    ? await db
+        .from('siswa')
+        .update(p)
+        .eq('id',id)
+
+    : await db
+        .from('siswa')
+        .insert(p);
+
+
+  if(res.error){
+
+    $('ae').style.display='block';
+
+    $('ae').textContent =
+      res.error.message;
+
+    return;
+  }
+
+
+  $('ae').style.display='none';
+
+  $('ok').style.display='block';
+
+  $('ok').textContent =
+    'Data siswa berhasil disimpan.';
+
+  clearForm();
+
+  loadAdmin();
+}
+
+
+/* =========================
+   HAPUS SISWA
+========================= */
+
+async function deleteStudent(id){
+
+  if(!confirm(
+    'Hapus data siswa ini? Laporan Tahfiz siswa juga akan ikut terhapus.'
+  )) return;
+
+
+  let {error} =
+    await db
+      .from('siswa')
+      .delete()
+      .eq('id',id);
+
+
+  if(error){
+
+    alert(error.message);
+
+  }else{
+
+    loadAdmin();
+
+  }
+}
+
+
+/* =========================
+   FORM TAHFIZ
+========================= */
+
+function clearTahfizForm(){
+
+  $('tid').value='';
+  $('tbulan').value='';
+  $('tjus').value='';
+  $('tsurah').value='';
+  $('tayat').value='';
+  $('tketerangan').value='';
+
+  $('te').style.display='none';
+
+  $('tok').style.display='none';
+}
+
+
+/* =========================
+   SIMPAN TAHFIZ
+========================= */
+
+async function saveTahfiz(){
+
+  let siswa_id =
+    Number($('tsiswa').value);
+
+  let p = {
+
+    siswa_id:siswa_id,
+    bulan:v('tbulan'),
+    jus:v('tjus'),
+    surah:v('tsurah'),
+    ayat:v('tayat'),
+    keterangan:v('tketerangan')
+
+  };
+
+
+  if(!siswa_id || !p.bulan){
+
+    $('te').style.display='block';
+
+    $('te').textContent =
+      'Pilih siswa dan bulan terlebih dahulu.';
+
+    return;
+  }
+
+
+  let id = v('tid');
+
+  let res = id
+
+    ? await db
+        .from('tahfiz')
+        .update(p)
+        .eq('id',id)
+
+    : await db
+        .from('tahfiz')
+        .insert(p);
+
+
+  if(res.error){
+
+    $('te').style.display='block';
+
+    $('te').textContent =
+      res.error.message;
+
+    return;
+  }
+
+
+  $('te').style.display='none';
+
+  $('tok').style.display='block';
+
+  $('tok').textContent =
+    'Laporan Tahfiz berhasil disimpan.';
+
+  let selected =
+    $('tsiswa').value;
+
+  clearTahfizForm();
+
+  $('tsiswa').value=selected;
+
+  loadTahfizAdmin(selected);
+}
+
+
+/* =========================
+   LOAD TAHFIZ ADMIN
+========================= */
+
+async function loadTahfizAdmin(siswaId){
+
+  if(!siswaId) return;
+
+
+  let {
+    data,
+    error
+  } = await db
+    .from('tahfiz')
+    .select('*')
+    .eq('siswa_id',siswaId)
+    .order('id',{ascending:false});
+
+
+  if(error){
+
+    $('tahfizAdminList').innerHTML =
+      `<div class="error" style="display:block">
+        ${safe(error.message)}
+      </div>`;
+
+    return;
+  }
+
+
+  let siswa =
+    students.find(
+      s => String(s.id) === String(siswaId)
+    );
+
+
+  if(!data || !data.length){
+
+    $('tahfizAdminList').innerHTML = `
+
+      <div class="empty">
+
+        📖 Belum ada laporan Tahfiz untuk
+        <b>${safe(siswa?.nama || '')}</b>.
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  $('tahfizAdminList').innerHTML = `
+
+    <h3>
+      📖 Laporan Tahfiz:
+      ${safe(siswa?.nama || '')}
+    </h3>
+
+    <div style="overflow-x:auto">
+
+      <table>
+
+        <tr>
+          <th>No</th>
+          <th>Bulan</th>
+          <th>Juz</th>
+          <th>Surah</th>
+          <th>Ayat</th>
+          <th>Keterangan</th>
+          <th>Aksi</th>
+        </tr>
+
+        ${
+          data.map((t,i)=>`
+
+            <tr>
+
+              <td>${i+1}</td>
+
+              <td>${safe(t.bulan)}</td>
+
+              <td>${safe(t.jus)}</td>
+
+              <td>${safe(t.surah)}</td>
+
+              <td>${safe(t.ayat)}</td>
+
+              <td>${safe(t.keterangan || '-')}</td>
+
+              <td>
+
+                <button
+                  class="small"
+                  onclick='editTahfiz(${JSON.stringify(t)})'>
+                  Edit
+                </button>
+
+                <button
+                  class="small red"
+                  onclick="deleteTahfiz(${t.id},${t.siswa_id})">
+                  Hapus
+                </button>
+
+              </td>
+
+            </tr>
+
+          `).join('')
+        }
+
+      </table>
+
+    </div>
+  `;
+}
+
+
+/* =========================
+   EDIT TAHFIZ
+========================= */
+
+function editTahfiz(t){
+
+  $('tid').value =
+    t.id;
+
+  $('tsiswa').value =
+    String(t.siswa_id);
+
+  $('tbulan').value =
+    t.bulan || '';
+
+  $('tjus').value =
+    t.jus || '';
+
+  $('tsurah').value =
+    t.surah || '';
+
+  $('tayat').value =
+    t.ayat || '';
+
+  $('tketerangan').value =
+    t.keterangan || '';
+
+
+  $('tok').style.display='none';
+
+  $('tbulan').focus();
+
+  window.scrollTo({
+    top:document.body.scrollHeight,
+    behavior:'smooth'
+  });
+}
+
+
+/* =========================
+   HAPUS TAHFIZ
+========================= */
+
+async function deleteTahfiz(id,siswaId){
+
+  if(!confirm(
+    'Hapus laporan Tahfiz ini?'
+  )) return;
+
+
+  let {error} =
+    await db
+      .from('tahfiz')
+      .delete()
+      .eq('id',id);
+
+
+  if(error){
+
+    alert(error.message);
+
+  }else{
+
+    loadTahfizAdmin(siswaId);
+
+  }
+}
+
+</script>
+
+</body>
+</html>
