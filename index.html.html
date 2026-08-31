@@ -26,7 +26,20 @@
 </main></div></div><div id="printArea"></div>
 <script>
 'use strict';
-const db=window.supabase.createClient("https://uepbvyzqrhhvgzktxkmg.supabase.co","sb_publishable_WBsGgAeaYivEAv7xL7qF_A_ilXHg2X-");
+let db = null;
+
+function initSupabase(){
+    if(window.supabase && window.supabase.createClient){
+        db = window.supabase.createClient(
+            "https://uepbvyzqrhhvgzktxkmg.supabase.co",
+            "sb_publishable_WBsGgAeaYivEAv7xL7qF_A_ilXHg2X-"
+        );
+        return true;
+    }
+
+    console.error("Supabase gagal dimuat.");
+    return false;
+}
 let students=[],currentStudent=null,currentTahfiz=[],currentPelajaran=[],currentClass="",classDashboardData=[],allTahfiz=[],allPelajaran=[];
 const $=id=>document.getElementById(id); const v=id=>{const e=$(id);return e?e.value.trim():''};
 function safe(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
@@ -61,5 +74,7 @@ function printClassDashboard(){if(!currentClass||!classDashboardData.length){ale
 function printTahfizPage(){setPrintArea('DATA TAHFIDZ',$('tahfizPageList').innerHTML)} function printPelajaranPage(){setPrintArea("DATA AL-QUR'AN",$('alquranPageList').innerHTML)}
 // Cek otomatis: halaman tetap bisa dibuka walaupun koneksi Supabase sedang lambat.
 window.addEventListener('error',e=>{console.error(e.error||e.message)});
-</script>
+window.addEventListener('DOMContentLoaded', function(){
+    initSupabase();
+});</script>
 </body></html>
