@@ -18,35 +18,41 @@ body{
   color:#24332d;
 }
 
+/* =========================
+   HEADER
+========================= */
+
 header{
   background:#176b52;
   color:white;
-  padding:25px 20px;
+  padding:18px 20px;
   text-align:center;
-  min-height:170px;
 }
 
 .logo{
-  width:85px;
-  height:85px;
+  width:65px;
+  height:65px;
   object-fit:contain;
   background:white;
   border-radius:50%;
-  padding:5px;
-  margin-bottom:10px;
+  padding:4px;
 }
 
-h1{
-  margin:0 0 8px;
-  font-size:30px;
+header h1{
+  margin:7px 0 3px;
+  font-size:25px;
 }
 
 header div{
-  font-size:16px;
+  font-size:14px;
 }
 
+/* =========================
+   UMUM
+========================= */
+
 .wrap{
-  max-width:1050px;
+  max-width:1200px;
   margin:25px auto;
   padding:0 15px;
 }
@@ -97,7 +103,7 @@ button.small{
 button.big{
   padding:16px 22px;
   font-size:16px;
-  min-width:230px;
+  min-width:220px;
 }
 
 input,select,textarea{
@@ -107,6 +113,11 @@ input,select,textarea{
   border-radius:8px;
   margin:5px 0 12px;
   font-size:15px;
+}
+
+label{
+  font-weight:bold;
+  font-size:14px;
 }
 
 .grid{
@@ -123,24 +134,6 @@ input,select,textarea{
 
 .center{
   text-align:center;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-
-.stat{
-  padding:15px;
-  background:#edf7f2;
-  border-radius:10px;
-}
-
-.stat b{
-  font-size:22px;
-  display:block;
-  color:#176b52;
 }
 
 .error{
@@ -161,6 +154,176 @@ input,select,textarea{
   margin:12px 0;
 }
 
+.empty{
+  padding:14px;
+  background:#f5faf8;
+  border-left:4px solid #176b52;
+  color:#445;
+}
+
+.badge{
+  display:inline-block;
+  background:#e5f3ed;
+  color:#176b52;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:12px;
+}
+
+/* =========================
+   HOME
+========================= */
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:15px;
+  margin-top:20px;
+}
+
+.choice{
+  min-height:130px;
+  font-size:18px;
+}
+
+/* =========================
+   ADMIN LAYOUT
+========================= */
+
+.admin-layout{
+  display:grid;
+  grid-template-columns:230px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  background:white;
+  border-radius:16px;
+  padding:15px;
+  box-shadow:0 3px 16px #0001;
+  position:sticky;
+  top:15px;
+}
+
+.sidebar-title{
+  font-weight:bold;
+  color:#176b52;
+  font-size:18px;
+  padding:10px;
+  margin-bottom:8px;
+}
+
+.sidebar button{
+  width:100%;
+  text-align:left;
+  margin-bottom:7px;
+  background:white;
+  color:#24332d;
+}
+
+.sidebar button:hover{
+  background:#edf7f2;
+}
+
+.sidebar button.active{
+  background:#176b52;
+  color:white;
+}
+
+.sidebar .logout{
+  background:#b42318;
+  color:white;
+  margin-top:15px;
+}
+
+/* KONTEN ADMIN */
+
+.admin-content{
+  min-width:0;
+}
+
+.admin-page{
+  display:none;
+}
+
+.admin-page.active{
+  display:block;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin-bottom:18px;
+}
+
+.stat{
+  padding:18px;
+  background:#edf7f2;
+  border-radius:12px;
+}
+
+.stat b{
+  font-size:27px;
+  display:block;
+  color:#176b52;
+  margin-bottom:5px;
+}
+
+.stat small{
+  color:#566;
+}
+
+.dashboard-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+
+.dashboard-box{
+  background:white;
+  border-radius:14px;
+  padding:18px;
+  box-shadow:0 3px 16px #0001;
+}
+
+.dashboard-box h3{
+  margin-top:0;
+  color:#176b52;
+}
+
+.class-card{
+  border:1px solid #dce9e3;
+  border-radius:10px;
+  padding:13px;
+  margin-bottom:8px;
+  cursor:pointer;
+  background:#f9fcfa;
+}
+
+.class-card:hover{
+  background:#edf7f2;
+}
+
+.class-card b{
+  color:#176b52;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.table-wrap{
+  overflow-x:auto;
+}
+
 table{
   width:100%;
   border-collapse:collapse;
@@ -178,21 +341,9 @@ th{
   color:#176b52;
 }
 
-.badge{
-  display:inline-block;
-  background:#e5f3ed;
-  color:#176b52;
-  padding:5px 9px;
-  border-radius:20px;
-  font-size:12px;
-}
-
-.empty{
-  padding:14px;
-  background:#f5faf8;
-  border-left:4px solid #176b52;
-  color:#445;
-}
+/* =========================
+   DATA BOX
+========================= */
 
 .tahfiz-box,
 .pelajaran-box{
@@ -214,16 +365,10 @@ th{
   margin:6px 0;
 }
 
-.choice-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-  margin-top:20px;
-}
-
-.choice{
-  min-height:130px;
-  font-size:18px;
+.score{
+  font-size:20px;
+  font-weight:bold;
+  color:#176b52;
 }
 
 .student-head{
@@ -233,34 +378,16 @@ th{
   margin:15px 0;
 }
 
-.score{
-  font-size:22px;
-  font-weight:bold;
-  color:#176b52;
-}
+/* =========================
+   PRINT
+========================= */
 
 .print-header{
   display:none;
 }
 
-@media(max-width:700px){
-  .grid,
-  .stats,
-  .choice-grid{
-    grid-template-columns:1fr;
-  }
-
-  table{
-    display:block;
-    overflow-x:auto;
-  }
-
-  h1{
-    font-size:24px;
-  }
-}
-
 @media print{
+
   body{
     background:white;
   }
@@ -282,10 +409,6 @@ th{
     padding:20px;
   }
 
-  .no-print{
-    display:none!important;
-  }
-
   .print-header{
     display:block;
     text-align:center;
@@ -296,10 +419,57 @@ th{
     margin:5px 0;
   }
 
-  .tahfiz-box,
-  .pelajaran-box{
-    page-break-inside:avoid;
+  .print-table{
+    width:100%;
+    border-collapse:collapse;
   }
+
+  .print-table th,
+  .print-table td{
+    border:1px solid #333;
+    padding:8px;
+  }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:800px){
+
+  .admin-layout{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:static;
+  }
+
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  .dashboard-grid{
+    grid-template-columns:1fr;
+  }
+
+  .grid,
+  .choice-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .stats{
+    grid-template-columns:1fr;
+  }
+
+  header h1{
+    font-size:21px;
+  }
+
 }
 </style>
 </head>
@@ -307,14 +477,21 @@ th{
 <body>
 
 <header>
+
 <img src="logo.jpeg" class="logo" alt="Logo SDIT An-Nahl">
+
 <h1>Data Al-Qur'an</h1>
+
 <div>SDIT AN-NAHL SERI KUALA LOBAM</div>
+
 </header>
 
 <div class="wrap">
 
-<!-- HOME -->
+<!-- =========================
+     HOME
+========================= -->
+
 <div id="home" class="card center">
 
 <h2>Selamat Datang</h2>
@@ -336,14 +513,17 @@ th{
 </div>
 
 
-<!-- WALI LOGIN -->
+<!-- =========================
+     WALI LOGIN
+========================= -->
+
 <div id="wali" class="card hidden">
 
-<button class="gray no-print" onclick="show('home')">
+<button class="gray" onclick="show('home')">
 ← Kembali
 </button>
 
-<h2 class="center">Pencarian</h2>
+<h2 class="center">Pencarian Data Anak</h2>
 
 <p class="center">
 Masukkan nama anak dan PIN dari sekolah.
@@ -362,9 +542,11 @@ placeholder="PIN"
 >
 
 <div class="center">
+
 <button onclick="waliLogin()">
 Lihat Data Anak
 </button>
+
 </div>
 
 <div id="we" class="error"></div>
@@ -374,10 +556,13 @@ Lihat Data Anak
 </div>
 
 
-<!-- LOGIN ADMIN -->
+<!-- =========================
+     LOGIN ADMIN
+========================= -->
+
 <div id="login" class="card hidden">
 
-<button class="gray no-print" onclick="show('home')">
+<button class="gray" onclick="show('home')">
 ← Kembali
 </button>
 
@@ -404,46 +589,228 @@ Login
 </div>
 
 
-<!-- ADMIN -->
-<div id="admin" class="card hidden">
+<!-- =========================
+     ADMIN
+========================= -->
 
-<div class="actions no-print">
+<div id="admin" class="hidden">
 
-<button onclick="logout()">
-Keluar
+<div class="admin-layout">
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-title">
+👨‍🏫 ADMIN
+</div>
+
+<button
+id="navDashboard"
+class="active"
+onclick="adminPage('dashboard')">
+📊 Dashboard
 </button>
 
-<button class="gray" onclick="loadAdmin()">
+<button
+id="navSiswa"
+onclick="adminPage('siswa')">
+👨‍🎓 Data Siswa
+</button>
+
+<button
+id="navTahfiz"
+onclick="adminPage('tahfiz')">
+📖 Data Tahfidz
+</button>
+
+<button
+id="navPelajaran"
+onclick="adminPage('pelajaran')">
+📚 Data Pelajaran
+</button>
+
+<button
+class="logout"
+onclick="logout()">
+🚪 Keluar
+</button>
+
+</div>
+
+
+<!-- KONTEN -->
+
+<div class="admin-content">
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div
+id="page-dashboard"
+class="admin-page active">
+
+<div class="card">
+
+<div class="actions" style="justify-content:space-between">
+
+<div>
+
+<h2 style="margin:0">
+📊 Dashboard Admin
+</h2>
+
+<p style="margin-bottom:0">
+Ringkasan seluruh data siswa.
+</p>
+
+</div>
+
+<button
+class="gray"
+onclick="loadAdmin()">
 ↻ Refresh
 </button>
 
 </div>
 
-<h2>👨‍🏫 Dashboard Admin</h2>
+</div>
+
 
 <div class="stats">
 
 <div class="stat">
+
 <b id="total">0</b>
+
 Total Siswa
+
+<br>
+
+<small>Semua siswa</small>
+
 </div>
 
+
 <div class="stat">
+
 <b id="laki">0</b>
+
 Laki-laki
+
+<br>
+
+<small>Siswa laki-laki</small>
+
 </div>
+
 
 <div class="stat">
+
 <b id="perempuan">0</b>
+
 Perempuan
+
+<br>
+
+<small>Siswa perempuan</small>
+
+</div>
+
+
+<div class="stat">
+
+<b id="kelascount">0</b>
+
+Kelas
+
+<br>
+
+<small>Jumlah kelas</small>
+
 </div>
 
 </div>
 
 
-<hr>
+<div class="dashboard-grid">
 
-<h3>Data Siswa</h3>
+
+<div class="dashboard-box">
+
+<h3>
+🏫 Data Berdasarkan Kelas
+</h3>
+
+<p>
+Tekan kelas untuk melihat siswa di kelas tersebut.
+</p>
+
+<div id="classList">
+Memuat...
+</div>
+
+</div>
+
+
+<div class="dashboard-box">
+
+<h3>
+👨‍🎓 Pencarian Siswa
+</h3>
+
+<p>
+Cari siswa untuk melihat dan mengubah datanya.
+</p>
+
+<input
+id="dashboardSearch"
+oninput="renderDashboardStudents()"
+placeholder="🔎 Cari nama siswa..."
+>
+
+<div id="dashboardStudents">
+Memuat...
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     DATA SISWA
+========================= -->
+
+<div
+id="page-siswa"
+class="admin-page">
+
+<div class="card">
+
+<div class="actions">
+
+<button onclick="adminPage('dashboard')">
+← Dashboard
+</button>
+
+<button
+class="gray"
+onclick="loadAdmin()">
+↻ Refresh
+</button>
+
+</div>
+
+<h2>👨‍🎓 Data Siswa</h2>
+
+<p>
+Cari siswa terlebih dahulu, kemudian tekan <b>Edit</b> untuk mengubah data.
+</p>
 
 <input
 id="search"
@@ -455,62 +822,83 @@ placeholder="🔎 Cari nama atau kelas..."
 Memuat...
 </div>
 
+</div>
 
-<hr>
 
-<h3 id="formtitle">
-➕ Tambah / Edit Siswa
-</h3>
+<div class="card">
 
-<input type="hidden" id="sid">
+<h2 id="formtitle">
+➕ Tambah Data Siswa
+</h2>
+
+<input
+type="hidden"
+id="sid"
+>
 
 <div class="grid">
 
 <div>
 
 <label>Nama *</label>
+
 <input id="nama">
 
 <label>Kelas</label>
+
 <input id="kelas">
 
 <label>Jenis Kelamin</label>
 
 <select id="jk">
+
 <option>Laki-laki</option>
 <option>Perempuan</option>
+
 </select>
 
 <label>PIN Wali *</label>
-<input id="pin" inputmode="numeric">
+
+<input
+id="pin"
+inputmode="numeric"
+>
 
 </div>
+
 
 <div>
 
 <label>Tempat/Tanggal Lahir</label>
+
 <input id="ttl">
 
 <label>Alamat</label>
+
 <input id="alamat">
 
 <label>Nama Ayah</label>
+
 <input id="ayah">
 
 <label>Nama Ibu</label>
+
 <input id="ibu">
 
 </div>
 
 </div>
 
+
 <div class="actions">
 
 <button onclick="saveStudent()">
-💾 Simpan
+💾 Simpan Data
 </button>
 
-<button class="gray" onclick="clearForm()">
+<button
+class="gray"
+onclick="clearForm()">
 Bersihkan
 </button>
 
@@ -520,25 +908,54 @@ Bersihkan
 
 <div id="ok" class="ok"></div>
 
+</div>
 
-<!-- TAHFIZ ADMIN -->
-<hr>
+</div>
 
-<h3>
-📖 Tambah Laporan Tahfiz
-</h3>
+
+<!-- =========================
+     TAHFIZ
+========================= -->
+
+<div
+id="page-tahfiz"
+class="admin-page">
+
+<div class="card">
+
+<div class="actions">
+
+<button onclick="adminPage('dashboard')">
+← Dashboard
+</button>
+
+</div>
+
+<h2>📖 Data Tahfidz</h2>
+
+<p>
+Pilih siswa untuk menambahkan atau melihat laporan Tahfidz.
+</p>
 
 <label>Siswa</label>
 
 <select id="tahfizSiswa">
-<option value="">-- Pilih Siswa --</option>
+
+<option value="">
+-- Pilih Siswa --
+</option>
+
 </select>
+
 
 <label>Bulan</label>
 
 <select id="tahfizBulan">
 
-<option value="">-- Pilih Bulan --</option>
+<option value="">
+-- Pilih Bulan --
+</option>
+
 <option>Januari</option>
 <option>Februari</option>
 <option>Maret</option>
@@ -554,17 +971,20 @@ Bersihkan
 
 </select>
 
+
 <div class="grid">
 
 <div>
 
 <label>Mulai Surah</label>
+
 <input
 id="mulaiSurah"
 placeholder="Contoh: An-Naba"
 >
 
 <label>Mulai Ayat</label>
+
 <input
 id="mulaiAyat"
 type="number"
@@ -573,15 +993,18 @@ placeholder="Contoh: 1"
 
 </div>
 
+
 <div>
 
 <label>Sampai Surah</label>
+
 <input
 id="sampaiSurah"
 placeholder="Contoh: An-Nazi'at"
 >
 
 <label>Sampai Ayat</label>
+
 <input
 id="sampaiAyat"
 type="number"
@@ -592,6 +1015,7 @@ placeholder="Contoh: 10"
 
 </div>
 
+
 <label>Keterangan</label>
 
 <textarea
@@ -600,13 +1024,16 @@ rows="3"
 placeholder="Contoh: Lancar"
 ></textarea>
 
+
 <div class="actions">
 
 <button onclick="saveTahfiz()">
-📖 Simpan Tahfiz
+📖 Simpan Tahfidz
 </button>
 
-<button class="gray" onclick="clearTahfizForm()">
+<button
+class="gray"
+onclick="clearTahfizForm()">
 Bersihkan
 </button>
 
@@ -616,30 +1043,54 @@ Bersihkan
 
 <div id="tok" class="ok"></div>
 
+</div>
 
-<hr>
 
-<h3>
-📖 Data Laporan Tahfiz
-</h3>
+<div class="card">
+
+<h2>
+📖 Laporan Tahfidz Siswa
+</h2>
 
 <div id="adminTahfizList">
 Pilih siswa untuk melihat laporan.
 </div>
 
+</div>
 
-<!-- PELAJARAN ADMIN -->
-<hr>
+</div>
 
-<h3>
-📚 Tambah Data Pelajaran Al-Qur'an
-</h3>
+
+<!-- =========================
+     PELAJARAN
+========================= -->
+
+<div
+id="page-pelajaran"
+class="admin-page">
+
+<div class="card">
+
+<div class="actions">
+
+<button onclick="adminPage('dashboard')">
+← Dashboard
+</button>
+
+</div>
+
+<h2>📚 Data Pelajaran Al-Qur'an</h2>
 
 <label>Siswa</label>
 
 <select id="pelajaranSiswa">
-<option value="">-- Pilih Siswa --</option>
+
+<option value="">
+-- Pilih Siswa --
+</option>
+
 </select>
+
 
 <label>Tanggal</label>
 
@@ -648,12 +1099,14 @@ id="pelajaranTanggal"
 type="date"
 >
 
+
 <label>Materi</label>
 
 <input
 id="pelajaranMateri"
 placeholder="Contoh: Hukum Nun Mati dan Tanwin"
 >
+
 
 <label>Nilai</label>
 
@@ -665,13 +1118,16 @@ max="100"
 placeholder="Contoh: 90"
 >
 
+
 <div class="actions">
 
 <button onclick="savePelajaran()">
 📚 Simpan Nilai
 </button>
 
-<button class="gray" onclick="clearPelajaranForm()">
+<button
+class="gray"
+onclick="clearPelajaranForm()">
 Bersihkan
 </button>
 
@@ -681,11 +1137,14 @@ Bersihkan
 
 <div id="pok" class="ok"></div>
 
-<hr>
+</div>
 
-<h3>
-📚 Data Pelajaran Al-Qur'an
-</h3>
+
+<div class="card">
+
+<h2>
+📚 Data Pelajaran Siswa
+</h2>
 
 <div id="adminPelajaranList">
 Pilih siswa untuk melihat data pelajaran.
@@ -696,52 +1155,138 @@ Pilih siswa untuk melihat data pelajaran.
 </div>
 
 
+</div>
+</div>
+</div>
+
+
 <!-- PRINT AREA -->
+
 <div id="printArea"></div>
 
 
 <script>
 
-const db = window.supabase.createClient(
+/* =========================
+   SUPABASE
+========================= */
+
+const db=window.supabase.createClient(
 "https://uepbvyzqrhhvgzktxkmg.supabase.co",
 "sb_publishable_WBsGgAeaYivEAv7xL7qF_A_ilXHg2X-"
 );
 
+
+/* =========================
+   DATA
+========================= */
+
 let students=[];
+
 let waliStudent=null;
+
 let waliTahfiz=[];
+
 let waliPelajaran=[];
+
 
 const $=id=>document.getElementById(id);
 
+
 const v=id=>{
-  const el=$(id);
-  return el ? el.value.trim() : '';
+
+const el=$(id);
+
+return el ? el.value.trim() : '';
+
 };
 
+
+/* =========================
+   KEAMANAN TAMPILAN
+========================= */
+
 function safe(x){
-  return String(x ?? '')
-  .replace(/[&<>"']/g,m=>({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[m]));
+
+return String(x ?? '')
+.replace(/[&<>"']/g,m=>({
+
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+
+}[m]));
+
 }
 
+
+/* =========================
+   PINDAH HALAMAN
+========================= */
 
 function show(id){
 
 ['home','wali','login','admin']
 .forEach(x=>{
-  $(x).classList.add('hidden');
+
+$(x).classList.add('hidden');
+
 });
 
 $(id).classList.remove('hidden');
 
 if(id==='admin'){
-  loadAdmin();
+
+loadAdmin();
+
+}
+
+}
+
+
+/* =========================
+   MENU ADMIN
+========================= */
+
+function adminPage(page){
+
+document
+.querySelectorAll('.admin-page')
+.forEach(x=>x.classList.remove('active'));
+
+
+document
+.querySelectorAll('.sidebar button')
+.forEach(x=>x.classList.remove('active'));
+
+
+const pageEl=$('page-'+page);
+
+if(pageEl){
+
+pageEl.classList.add('active');
+
+}
+
+
+const nav=$('nav'+
+page.charAt(0).toUpperCase()+
+page.slice(1));
+
+
+if(nav){
+
+nav.classList.add('active');
+
+}
+
+
+if(page==='dashboard'){
+
+loadAdmin();
+
 }
 
 }
@@ -754,78 +1299,94 @@ if(id==='admin'){
 async function waliLogin(){
 
 const e=$('we');
+
 const r=$('wresult');
 
 e.style.display='none';
+
 r.innerHTML='';
 
+
 const name=v('wnama');
+
 const pin=v('wpin');
+
 
 if(!name || !pin){
 
 e.style.display='block';
+
 e.textContent='Nama dan PIN wajib diisi.';
 
 return;
+
 }
 
 
 const {data,error}=await db.rpc(
+
 'cari_data_wali',
+
 {
+
 p_nama:name,
+
 p_pin:pin
+
 }
+
 );
 
 
 const x=data && data[0];
 
+
 if(error || !x){
 
 e.style.display='block';
+
 e.textContent='Nama atau PIN salah.';
 
 return;
+
 }
 
 
 waliStudent=x;
 
 
-/*
-  Ambil Tahfiz menggunakan RPC
-  yang sudah digunakan sebelumnya.
-*/
-
 const tahfizResult=await db.rpc(
+
 'cari_tahfiz_wali',
+
 {
+
 p_nama:name,
+
 p_pin:pin
+
 }
+
 );
+
 
 if(tahfizResult.error){
 
 e.style.display='block';
+
 e.textContent=
-'Data siswa ditemukan, tetapi laporan Tahfiz gagal diambil: '+
+'Data Tahfidz gagal diambil: '+
 tahfizResult.error.message;
 
 return;
+
 }
+
 
 waliTahfiz=tahfizResult.data || [];
 
 
-/*
-  Pelajaran Al-Qur'an.
-  Menggunakan siswa_id.
-*/
-
-let pelajaranResult=
+const pelajaranResult=
 await db
 .from('pelajaran_quran')
 .select('*')
@@ -833,20 +1394,13 @@ await db
 .order('tanggal',{ascending:false});
 
 
-if(pelajaranResult.error){
+waliPelajaran=
+pelajaranResult.error
+?
+[]
+:
+pelajaranResult.data || [];
 
-waliPelajaran=[];
-
-}else{
-
-waliPelajaran=pelajaranResult.data || [];
-
-}
-
-
-/*
-  Tampilkan pilihan data
-*/
 
 r.innerHTML=`
 
@@ -865,6 +1419,7 @@ ${safe(x.jk || '-')}
 
 </div>
 
+
 <h2 class="center">
 Data Anak
 </h2>
@@ -872,6 +1427,7 @@ Data Anak
 <p class="center">
 Silakan pilih data yang ingin dilihat.
 </p>
+
 
 <div class="choice-grid">
 
@@ -883,6 +1439,7 @@ onclick="showWaliData('tahfiz')">
 Data Tahfidz
 
 </button>
+
 
 <button
 class="choice"
@@ -896,6 +1453,7 @@ Al-Qur'an
 
 </div>
 
+
 <div id="waliData"></div>
 
 `;
@@ -903,15 +1461,21 @@ Al-Qur'an
 }
 
 
+/* =========================
+   DATA WALI
+========================= */
+
 function showWaliData(type){
 
 const box=$('waliData');
+
 
 if(type==='tahfiz'){
 
 box.innerHTML=renderWaliTahfiz();
 
 }
+
 
 if(type==='pelajaran'){
 
@@ -923,7 +1487,7 @@ box.innerHTML=renderWaliPelajaran();
 
 
 /* =========================
-   RENDER TAHFIZ WALI
+   TAHFIZ WALI
 ========================= */
 
 function renderWaliTahfiz(){
@@ -932,18 +1496,18 @@ let html=`
 
 <hr>
 
-<div class="actions no-print">
+<div class="actions">
 
-<button
-onclick="printTahfizWali()">
+<button onclick="printTahfizWali()">
 🖨️ Cetak Tahfidz
 </button>
 
 </div>
 
-<h2 class="tahfiz-title">
+<h2>
 📖 Laporan Tahfidz
 </h2>
+
 `;
 
 
@@ -965,31 +1529,50 @@ html+=waliTahfiz.map(t=>`
 <div class="tahfiz-box">
 
 <div class="tahfiz-month">
+
 📅 ${safe(t.bulan || '-')}
+
 </div>
 
+
 <div class="item">
+
 <b>Mulai:</b>
+
 ${safe(t.mulai_surah || '-')}
+
 ayat
+
 ${safe(t.mulai_ayat || '-')}
+
 </div>
 
+
 <div class="item">
+
 <b>Sampai:</b>
+
 ${safe(t.sampai_surah || '-')}
+
 ayat
+
 ${safe(t.sampai_ayat || '-')}
+
 </div>
 
+
 <div class="item">
+
 <b>Keterangan:</b>
+
 ${safe(t.keterangan || '-')}
+
 </div>
 
 </div>
 
 `).join('');
+
 
 return html;
 
@@ -997,7 +1580,7 @@ return html;
 
 
 /* =========================
-   RENDER PELAJARAN WALI
+   PELAJARAN WALI
 ========================= */
 
 function renderWaliPelajaran(){
@@ -1006,10 +1589,9 @@ let html=`
 
 <hr>
 
-<div class="actions no-print">
+<div class="actions">
 
-<button
-onclick="printPelajaranWali()">
+<button onclick="printPelajaranWali()">
 🖨️ Cetak Data Pelajaran
 </button>
 
@@ -1018,6 +1600,7 @@ onclick="printPelajaranWali()">
 <h2>
 📚 Data Pelajaran Al-Qur'an
 </h2>
+
 `;
 
 
@@ -1036,12 +1619,18 @@ Belum ada data pelajaran Al-Qur'an.
 
 html+=`
 
+<div class="table-wrap">
+
 <table>
 
 <tr>
+
 <th>Tanggal</th>
+
 <th>Materi</th>
+
 <th>Nilai</th>
+
 </tr>
 
 `;
@@ -1067,7 +1656,15 @@ ${safe(p.nilai ?? '-')}
 
 `).join('');
 
-html+=`</table>`;
+
+html+=`
+
+</table>
+
+</div>
+
+`;
+
 
 return html;
 
@@ -1075,7 +1672,7 @@ return html;
 
 
 /* =========================
-   FORMAT TANGGAL
+   TANGGAL
 ========================= */
 
 function formatTanggal(t){
@@ -1097,7 +1694,7 @@ year:'numeric'
 
 
 /* =========================
-   ADMIN LOGIN
+   LOGIN ADMIN
 ========================= */
 
 async function adminLogin(){
@@ -1110,14 +1707,17 @@ password:$('password').value
 
 });
 
+
 if(error){
 
 $('le').style.display='block';
+
 $('le').textContent=error.message;
 
 return;
 
 }
+
 
 $('le').style.display='none';
 
@@ -1125,6 +1725,10 @@ show('admin');
 
 }
 
+
+/* =========================
+   LOGOUT
+========================= */
 
 async function logout(){
 
@@ -1149,20 +1753,216 @@ const {data,error}=await db
 
 if(error){
 
+if($('list')){
+
 $('list').innerHTML=
 '<div class="error" style="display:block">'+
 safe(error.message)+
 '</div>';
 
+}
+
 return;
+
 }
 
 
 students=data || [];
 
+
 renderStudents();
+
 updateStats();
+
 loadStudentSelect();
+
+renderClassList();
+
+renderDashboardStudents();
+
+}
+
+
+/* =========================
+   STATISTIK
+========================= */
+
+function updateStats(){
+
+$('total').textContent=
+students.length;
+
+
+$('laki').textContent=
+students.filter(
+x=>x.jk==='Laki-laki'
+).length;
+
+
+$('perempuan').textContent=
+students.filter(
+x=>x.jk==='Perempuan'
+).length;
+
+
+$('kelascount').textContent=
+new Set(
+students
+.map(x=>(x.kelas||'').trim())
+.filter(Boolean)
+).size;
+
+}
+
+
+/* =========================
+   DASHBOARD KELAS
+========================= */
+
+function renderClassList(){
+
+const box=$('classList');
+
+if(!students.length){
+
+box.innerHTML=
+'<div class="empty">Belum ada siswa.</div>';
+
+return;
+
+}
+
+
+const groups={};
+
+
+students.forEach(s=>{
+
+const kelas=s.kelas || 'Belum ada kelas';
+
+if(!groups[kelas]){
+
+groups[kelas]=[];
+
+}
+
+groups[kelas].push(s);
+
+});
+
+
+const kelasList=
+Object.keys(groups).sort();
+
+
+box.innerHTML=
+kelasList.map(k=>`
+
+<div
+class="class-card"
+onclick="showClassStudents('${encodeURIComponent(k)}')">
+
+<b>🏫 Kelas ${safe(k)}</b>
+
+<br>
+
+${groups[k].length} siswa
+
+</div>
+
+`).join('');
+
+}
+
+
+/* =========================
+   SISWA DALAM KELAS
+========================= */
+
+function showClassStudents(encoded){
+
+const kelas=decodeURIComponent(encoded);
+
+adminPage('siswa');
+
+$('search').value=kelas;
+
+renderStudents();
+
+}
+
+
+/* =========================
+   DASHBOARD CARI SISWA
+========================= */
+
+function renderDashboardStudents(){
+
+const q=
+v('dashboardSearch').toLowerCase();
+
+
+const arr=
+students
+.filter(s=>
+(s.nama||'')
+.toLowerCase()
+.includes(q) ||
+(s.kelas||'')
+.toLowerCase()
+.includes(q)
+)
+.slice(0,15);
+
+
+const box=$('dashboardStudents');
+
+
+if(!arr.length){
+
+box.innerHTML=
+'<div class="empty">Siswa tidak ditemukan.</div>';
+
+return;
+
+}
+
+
+box.innerHTML=arr.map(s=>`
+
+<div class="class-card">
+
+<b>
+${safe(s.nama)}
+</b>
+
+<br>
+
+<span class="badge">
+${safe(s.kelas || '-')}
+</span>
+
+<button
+class="small"
+style="float:right"
+onclick="editFromDashboard(${s.id})">
+
+Edit
+
+</button>
+
+</div>
+
+`).join('');
+
+}
+
+
+function editFromDashboard(id){
+
+adminPage('siswa');
+
+editStudent(id);
 
 }
 
@@ -1173,27 +1973,52 @@ loadStudentSelect();
 
 function renderStudents(){
 
-const q=v('search').toLowerCase();
+const q=
+v('search').toLowerCase();
 
-const a=students.filter(s=>
 
-(s.nama||'').toLowerCase().includes(q) ||
+const a=
+students.filter(s=>
 
-(s.kelas||'').toLowerCase().includes(q)
+(s.nama||'')
+.toLowerCase()
+.includes(q) ||
+
+(s.kelas||'')
+.toLowerCase()
+.includes(q)
 
 );
 
 
+if(!a.length){
+
+$('list').innerHTML=
+'<div class="empty">Data siswa tidak ditemukan.</div>';
+
+return;
+
+}
+
+
 $('list').innerHTML=`
+
+<div class="table-wrap">
 
 <table>
 
 <tr>
+
 <th>No</th>
+
 <th>Nama</th>
+
 <th>Kelas</th>
+
 <th>Aksi</th>
+
 </tr>
+
 
 ${a.map((s,i)=>`
 
@@ -1210,13 +2035,18 @@ ${a.map((s,i)=>`
 <button
 class="small"
 onclick="editStudent(${s.id})">
+
 Edit
+
 </button>
+
 
 <button
 class="small red"
 onclick="deleteStudent(${s.id})">
+
 Hapus
+
 </button>
 
 </td>
@@ -1225,22 +2055,12 @@ Hapus
 
 `).join('')}
 
+
 </table>
 
+</div>
+
 `;
-
-}
-
-
-function updateStats(){
-
-$('total').textContent=students.length;
-
-$('laki').textContent=
-students.filter(x=>x.jk==='Laki-laki').length;
-
-$('perempuan').textContent=
-students.filter(x=>x.jk==='Perempuan').length;
 
 }
 
@@ -1252,6 +2072,7 @@ students.filter(x=>x.jk==='Perempuan').length;
 function clearForm(){
 
 [
+
 'sid',
 'nama',
 'kelas',
@@ -1260,31 +2081,48 @@ function clearForm(){
 'alamat',
 'ayah',
 'ibu'
+
 ].forEach(id=>{
-  $(id).value='';
+
+$(id).value='';
+
 });
 
+
+$('jk').value='Laki-laki';
+
+
 $('formtitle').textContent=
-'➕ Tambah / Edit Siswa';
+'➕ Tambah Data Siswa';
 
 }
 
 
 function editStudent(id){
 
-const s=students.find(x=>x.id===id);
+const s=
+students.find(x=>x.id===id);
+
 
 if(!s)return;
 
 
 $('sid').value=s.id || '';
+
 $('nama').value=s.nama || '';
+
 $('kelas').value=s.kelas || '';
+
 $('jk').value=s.jk || 'Laki-laki';
+
 $('pin').value=s.pin || '';
+
 $('ttl').value=s.ttl || '';
+
 $('alamat').value=s.alamat || '';
+
 $('ayah').value=s.ayah || '';
+
 $('ibu').value=s.ibu || '';
 
 
@@ -1309,12 +2147,19 @@ async function saveStudent(){
 const p={
 
 nama:v('nama'),
+
 kelas:v('kelas'),
+
 jk:v('jk'),
+
 pin:v('pin'),
+
 ttl:v('ttl'),
+
 alamat:v('alamat'),
+
 ayah:v('ayah'),
+
 ibu:v('ibu')
 
 };
@@ -1336,6 +2181,7 @@ const id=v('sid');
 
 let res;
 
+
 if(id){
 
 res=await db
@@ -1355,7 +2201,9 @@ res=await db
 if(res.error){
 
 $('ae').style.display='block';
-$('ae').textContent=res.error.message;
+
+$('ae').textContent=
+res.error.message;
 
 return;
 
@@ -1365,12 +2213,14 @@ return;
 $('ae').style.display='none';
 
 $('ok').style.display='block';
+
 $('ok').textContent=
 'Data siswa berhasil disimpan.';
 
+
 clearForm();
 
-loadAdmin();
+await loadAdmin();
 
 }
 
@@ -1381,8 +2231,9 @@ loadAdmin();
 
 async function deleteStudent(id){
 
-if(!confirm('Hapus data siswa ini?'))
-return;
+if(!confirm(
+'Hapus data siswa ini?'
+))return;
 
 
 const {error}=await db
@@ -1399,6 +2250,7 @@ return;
 
 }
 
+
 loadAdmin();
 
 }
@@ -1411,11 +2263,15 @@ loadAdmin();
 function loadStudentSelect(){
 
 const html=
+
 '<option value="">-- Pilih Siswa --</option>'+
+
 students.map(s=>`
 
 <option value="${s.id}">
+
 ${safe(s.nama)} - ${safe(s.kelas)}
+
 </option>
 
 `).join('');
@@ -1429,6 +2285,30 @@ $('pelajaranSiswa').innerHTML=html;
 
 
 /* =========================
+   EVENT PILIH TAHFIZ
+========================= */
+
+$('tahfizSiswa').addEventListener(
+'change',
+function(){
+
+if(this.value){
+
+loadTahfizAdmin(this.value);
+
+}
+
+else{
+
+$('adminTahfizList').innerHTML=
+'Pilih siswa untuk melihat laporan.';
+
+}
+
+});
+
+
+/* =========================
    SIMPAN TAHFIZ
 ========================= */
 
@@ -1438,12 +2318,19 @@ const e=$('te');
 
 e.style.display='none';
 
+
 const siswa_id=v('tahfizSiswa');
+
 const bulan=v('tahfizBulan');
+
 const mulai_surah=v('mulaiSurah');
+
 const mulai_ayat=v('mulaiAyat');
+
 const sampai_surah=v('sampaiSurah');
+
 const sampai_ayat=v('sampaiAyat');
+
 const keterangan=v('tahfizKeterangan');
 
 
@@ -1459,7 +2346,7 @@ if(
 e.style.display='block';
 
 e.textContent=
-'Siswa, bulan, mulai surah/ayat, dan sampai surah/ayat wajib diisi.';
+'Siswa, bulan, mulai dan sampai wajib diisi.';
 
 return;
 
@@ -1493,6 +2380,7 @@ const {error}=await db
 if(error){
 
 e.style.display='block';
+
 e.textContent=error.message;
 
 return;
@@ -1501,12 +2389,14 @@ return;
 
 
 $('tok').style.display='block';
+
 $('tok').textContent=
 'Laporan Tahfidz berhasil disimpan.';
 
-loadTahfizAdmin(siswa_id);
 
 clearTahfizForm();
+
+loadTahfizAdmin(siswa_id);
 
 }
 
@@ -1518,41 +2408,23 @@ clearTahfizForm();
 function clearTahfizForm(){
 
 $('tahfizBulan').value='';
+
 $('mulaiSurah').value='';
+
 $('mulaiAyat').value='';
+
 $('sampaiSurah').value='';
+
 $('sampaiAyat').value='';
+
 $('tahfizKeterangan').value='';
 
 }
 
 
 /* =========================
-   LIHAT TAHFIZ ADMIN
+   TAMPIL TAHFIZ ADMIN
 ========================= */
-
-$('tahfizSiswa').addEventListener(
-'change',
-function(){
-
-if(this.value){
-
-loadTahfizAdmin(this.value);
-
-loadPelajaranAdmin(this.value);
-
-}else{
-
-$('adminTahfizList').innerHTML=
-'Pilih siswa untuk melihat laporan.';
-
-$('adminPelajaranList').innerHTML=
-'Pilih siswa untuk melihat data pelajaran.';
-
-}
-
-});
-
 
 async function loadTahfizAdmin(siswaId){
 
@@ -1589,10 +2461,14 @@ return;
 
 $('adminTahfizList').innerHTML=
 
-'<div class="actions no-print">'+
+'<div class="actions">'+
+
 '<button onclick="printTahfizAdmin('+Number(siswaId)+')">'+
+
 '🖨️ Cetak Tahfidz'+
+
 '</button>'+
+
 '</div>'+
 
 data.map(t=>`
@@ -1600,34 +2476,56 @@ data.map(t=>`
 <div class="tahfiz-box">
 
 <div class="tahfiz-month">
+
 📅 ${safe(t.bulan || '-')}
+
 </div>
 
+
 <div class="item">
+
 <b>Mulai:</b>
+
 ${safe(t.mulai_surah || '-')}
+
 ayat
+
 ${safe(t.mulai_ayat || '-')}
+
 </div>
 
+
 <div class="item">
+
 <b>Sampai:</b>
+
 ${safe(t.sampai_surah || '-')}
+
 ayat
+
 ${safe(t.sampai_ayat || '-')}
+
 </div>
 
+
 <div class="item">
+
 <b>Keterangan:</b>
+
 ${safe(t.keterangan || '-')}
+
 </div>
+
 
 <br>
 
+
 <button
-class="small red no-print"
+class="small red"
 onclick="deleteTahfiz(${t.id},${Number(siswaId)})">
+
 Hapus
+
 </button>
 
 </div>
@@ -1643,8 +2541,9 @@ Hapus
 
 async function deleteTahfiz(id,siswaId){
 
-if(!confirm('Hapus laporan Tahfidz ini?'))
-return;
+if(!confirm(
+'Hapus laporan Tahfidz ini?'
+))return;
 
 
 const {error}=await db
@@ -1661,9 +2560,32 @@ return;
 
 }
 
+
 loadTahfizAdmin(siswaId);
 
 }
+
+
+/* =========================
+   EVENT PELAJARAN
+========================= */
+
+$('pelajaranSiswa').addEventListener(
+'change',
+function(){
+
+if(this.value){
+
+loadPelajaranAdmin(this.value);
+
+}else{
+
+$('adminPelajaranList').innerHTML=
+'Pilih siswa untuk melihat data pelajaran.';
+
+}
+
+});
 
 
 /* =========================
@@ -1676,13 +2598,22 @@ const e=$('pe');
 
 e.style.display='none';
 
+
 const siswa_id=v('pelajaranSiswa');
+
 const tanggal=v('pelajaranTanggal');
+
 const materi=v('pelajaranMateri');
+
 const nilai=v('pelajaranNilai');
 
 
-if(!siswa_id || !tanggal || !materi || nilai===''){
+if(
+!siswa_id ||
+!tanggal ||
+!materi ||
+nilai===''
+){
 
 e.style.display='block';
 
@@ -1715,6 +2646,7 @@ const {error}=await db
 if(error){
 
 e.style.display='block';
+
 e.textContent=error.message;
 
 return;
@@ -1723,12 +2655,14 @@ return;
 
 
 $('pok').style.display='block';
+
 $('pok').textContent=
 'Data pelajaran berhasil disimpan.';
 
-loadPelajaranAdmin(siswa_id);
 
 clearPelajaranForm();
+
+loadPelajaranAdmin(siswa_id);
 
 }
 
@@ -1740,33 +2674,17 @@ clearPelajaranForm();
 function clearPelajaranForm(){
 
 $('pelajaranTanggal').value='';
+
 $('pelajaranMateri').value='';
+
 $('pelajaranNilai').value='';
 
 }
 
 
 /* =========================
-   LIHAT PELAJARAN ADMIN
+   PELAJARAN ADMIN
 ========================= */
-
-$('pelajaranSiswa').addEventListener(
-'change',
-function(){
-
-if(this.value){
-
-loadPelajaranAdmin(this.value);
-
-}else{
-
-$('adminPelajaranList').innerHTML=
-'Pilih siswa untuk melihat data pelajaran.';
-
-}
-
-});
-
 
 async function loadPelajaranAdmin(siswaId){
 
@@ -1803,23 +2721,34 @@ return;
 
 $('adminPelajaranList').innerHTML=`
 
-<div class="actions no-print">
+<div class="actions">
 
 <button
 onclick="printPelajaranAdmin(${Number(siswaId)})">
+
 🖨️ Cetak Data Pelajaran
+
 </button>
 
 </div>
 
+
+<div class="table-wrap">
+
 <table>
 
 <tr>
+
 <th>Tanggal</th>
+
 <th>Materi</th>
+
 <th>Nilai</th>
+
 <th>Aksi</th>
+
 </tr>
+
 
 ${data.map(p=>`
 
@@ -1840,9 +2769,11 @@ ${safe(p.nilai ?? '-')}
 <td>
 
 <button
-class="small red no-print"
+class="small red"
 onclick="deletePelajaran(${p.id},${Number(siswaId)})">
+
 Hapus
+
 </button>
 
 </td>
@@ -1851,7 +2782,10 @@ Hapus
 
 `).join('')}
 
+
 </table>
+
+</div>
 
 `;
 
@@ -1864,8 +2798,9 @@ Hapus
 
 async function deletePelajaran(id,siswaId){
 
-if(!confirm('Hapus data pelajaran ini?'))
-return;
+if(!confirm(
+'Hapus data pelajaran ini?'
+))return;
 
 
 const {error}=await db
@@ -1882,6 +2817,7 @@ return;
 
 }
 
+
 loadPelajaranAdmin(siswaId);
 
 }
@@ -1897,9 +2833,13 @@ $('printArea').innerHTML=`
 
 <div class="print-header">
 
-<h2>SDIT AN-NAHL SERI KUALA LOBAM</h2>
+<h2>
+SDIT AN-NAHL SERI KUALA LOBAM
+</h2>
 
-<h3>${safe(title)}</h3>
+<h3>
+${safe(title)}
+</h3>
 
 </div>
 
@@ -1920,6 +2860,7 @@ function printTahfizWali(){
 
 if(!waliStudent)return;
 
+
 const content=`
 
 <h3>
@@ -1932,7 +2873,10 @@ Kelas: ${safe(waliStudent.kelas || '-')}
 
 <hr>
 
-${waliTahfiz.length ? waliTahfiz.map(t=>`
+
+${waliTahfiz.length ?
+
+waliTahfiz.map(t=>`
 
 <div class="tahfiz-box">
 
@@ -1943,13 +2887,15 @@ ${safe(t.bulan || '-')}
 
 <b>Mulai:</b>
 ${safe(t.mulai_surah || '-')}
-ayat ${safe(t.mulai_ayat || '-')}
+ayat
+${safe(t.mulai_ayat || '-')}
 
 <br>
 
 <b>Sampai:</b>
 ${safe(t.sampai_surah || '-')}
-ayat ${safe(t.sampai_ayat || '-')}
+ayat
+${safe(t.sampai_ayat || '-')}
 
 <br>
 
@@ -1958,11 +2904,14 @@ ${safe(t.keterangan || '-')}
 
 </div>
 
-`).join('') :
+`).join('')
+
+:
 
 '<p>Belum ada laporan Tahfidz.</p>'}
 
 `;
+
 
 setPrintArea(
 'LAPORAN TAHFIDZ',
@@ -1980,6 +2929,7 @@ function printPelajaranWali(){
 
 if(!waliStudent)return;
 
+
 const content=`
 
 <h3>
@@ -1992,13 +2942,18 @@ Kelas: ${safe(waliStudent.kelas || '-')}
 
 <hr>
 
-<table>
+<table class="print-table">
 
 <tr>
+
 <th>Tanggal</th>
+
 <th>Materi</th>
+
 <th>Nilai</th>
+
 </tr>
+
 
 ${waliPelajaran.length ?
 
@@ -2026,9 +2981,11 @@ ${safe(p.nilai ?? '-')}
 
 '<tr><td colspan="3">Belum ada data.</td></tr>'}
 
+
 </table>
 
 `;
+
 
 setPrintArea(
 'DATA PELAJARAN AL-QURAN',
@@ -2044,9 +3001,11 @@ content
 
 async function printTahfizAdmin(siswaId){
 
-const siswa=students.find(
+const siswa=
+students.find(
 s=>Number(s.id)===Number(siswaId)
 );
+
 
 const {data}=await db
 .from('tahfiz')
@@ -2067,6 +3026,7 @@ Kelas: ${safe(siswa?.kelas || '-')}
 
 <hr>
 
+
 ${data && data.length ?
 
 data.map(t=>`
@@ -2080,13 +3040,15 @@ ${safe(t.bulan || '-')}
 
 <b>Mulai:</b>
 ${safe(t.mulai_surah || '-')}
-ayat ${safe(t.mulai_ayat || '-')}
+ayat
+${safe(t.mulai_ayat || '-')}
 
 <br>
 
 <b>Sampai:</b>
 ${safe(t.sampai_surah || '-')}
-ayat ${safe(t.sampai_ayat || '-')}
+ayat
+${safe(t.sampai_ayat || '-')}
 
 <br>
 
@@ -2101,7 +3063,9 @@ ${safe(t.keterangan || '-')}
 
 '<p>Belum ada laporan Tahfidz.</p>'}
 
+
 `;
+
 
 setPrintArea(
 'LAPORAN TAHFIDZ',
@@ -2117,9 +3081,11 @@ content
 
 async function printPelajaranAdmin(siswaId){
 
-const siswa=students.find(
+const siswa=
+students.find(
 s=>Number(s.id)===Number(siswaId)
 );
+
 
 const {data}=await db
 .from('pelajaran_quran')
@@ -2140,13 +3106,19 @@ Kelas: ${safe(siswa?.kelas || '-')}
 
 <hr>
 
-<table>
+
+<table class="print-table">
 
 <tr>
+
 <th>Tanggal</th>
+
 <th>Materi</th>
+
 <th>Nilai</th>
+
 </tr>
+
 
 ${data && data.length ?
 
@@ -2174,9 +3146,11 @@ ${safe(p.nilai ?? '-')}
 
 '<tr><td colspan="3">Belum ada data.</td></tr>'}
 
+
 </table>
 
 `;
+
 
 setPrintArea(
 'DATA PELAJARAN AL-QURAN',
