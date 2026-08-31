@@ -10,6 +10,14 @@
 </style>
 </head>
 <body>
+<div id="startupError" style="display:none;position:fixed;inset:0;background:#f3f7f5;z-index:99999;padding:30px;font-family:Arial,sans-serif">
+  <div style="max-width:700px;margin:40px auto;background:#fff;padding:25px;border-radius:14px;box-shadow:0 3px 16px #0002">
+    <h2 style="color:#b42318;margin-top:0">Aplikasi tidak dapat dimuat</h2>
+    <p id="startupErrorText">Terjadi kesalahan saat memuat aplikasi.</p>
+    <p>Pastikan file dibuka sebagai <b>.html</b> dan perangkat terhubung ke internet.</p>
+    <button onclick="location.reload()">Coba Lagi</button>
+  </div>
+</div>
 <div id="publicApp"><header class="public-header"><img src="logo.jpeg" class="logo" alt="Logo SDIT An-Nahl"><h1 style="margin:8px 0 4px">Data Al-Qur'an</h1><div>SDIT AN-NAHL SERI KUALA LOBAM</div></header><div class="public-wrap">
 <div id="home" class="card center"><h2>Selamat Datang</h2><p>Silakan pilih akses.</p><div class="actions" style="justify-content:center"><button class="big" onclick="showPublic('wali')">🔎 Pencarian Wali</button><button class="big" onclick="showPublic('login')">👨‍🏫 Admin</button></div></div>
 <div id="wali" class="card hidden"><button class="gray" onclick="showPublic('home')">← Kembali</button><h2 class="center">Pencarian Wali</h2><p class="center">Masukkan nama anak dan PIN dari sekolah.</p><input id="wnama" placeholder="Nama lengkap anak"><input id="wpin" type="password" inputmode="numeric" placeholder="PIN"><div class="center"><button onclick="waliLogin()">Lihat Data Anak</button></div><div id="we" class="error"></div><div id="wresult"></div></div>
@@ -75,6 +83,18 @@ function printTahfizPage(){setPrintArea('DATA TAHFIDZ',$('tahfizPageList').inner
 // Cek otomatis: halaman tetap bisa dibuka walaupun koneksi Supabase sedang lambat.
 window.addEventListener('error',e=>{console.error(e.error||e.message)});
 window.addEventListener('DOMContentLoaded', function(){
-    initSupabase();
+    try{
+        if(!initSupabase()){
+            throw new Error('Library Supabase tidak berhasil dimuat. Periksa koneksi internet.');
+        }
+    }catch(err){
+        console.error(err);
+        const box=document.getElementById('startupError');
+        const msg=document.getElementById('startupErrorText');
+        if(box){
+            box.style.display='block';
+            if(msg) msg.textContent=err.message||'Terjadi kesalahan saat memulai aplikasi.';
+        }
+    }
 });</script>
 </body></html>
