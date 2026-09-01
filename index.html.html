@@ -14,7 +14,6 @@
 .muted{color:#718079;margin:4px 0 0}.card-head{display:flex;justify-content:space-between;align-items:center;gap:15px}.dashboard-search{padding:18px 20px}.dashboard-search h2{margin:0;color:var(--green);font-size:20px}.dashboard-search p{margin:4px 0 12px;color:#718079}.search-row{display:flex;gap:10px}.search-row input{margin:0;flex:1}.stats{margin:18px 0}.stat{position:relative;padding:18px 18px 16px 56px;background:#fff;border:1px solid var(--line);box-shadow:0 2px 10px #00000008}.stat b{font-size:28px;margin-bottom:2px}.stat>span:last-child{color:#6b7772;font-size:13px}.stat-icon{position:absolute;left:17px;top:20px;font-size:25px}.summary-card{position:relative;min-height:145px;padding:18px 18px 16px 56px;background:linear-gradient(180deg,#fff,#f9fcfb)}.summary-card>span{position:absolute;left:18px;top:18px;font-size:27px}.summary-card h3{margin:0 0 7px}.page-hero{background:linear-gradient(135deg,#176b52,#218163);color:#fff;border-radius:17px;padding:22px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 5px 18px #176b5226}.page-hero h2{margin:3px 0 5px;font-size:25px}.page-hero p{margin:0;opacity:.88}.page-hero .eyebrow,.form-head .eyebrow{font-size:11px;font-weight:bold;letter-spacing:1.2px;opacity:.75}.page-hero button{background:#fff;color:var(--green)}.page-hero button.blue{background:#2563eb;color:#fff}.filter-card{padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:15px}.filter-card input{margin:0;flex:1}.filter-label{font-weight:bold;color:var(--green);white-space:nowrap}.form-card{border:2px solid #cfe5db;box-shadow:0 7px 25px #176b5214}.form-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}.form-head h2{margin:3px 0 0;color:var(--green);font-size:21px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}.field.full{grid-column:1/-1}.field label{display:block;margin-top:6px;color:#34443d}.field input,.field select{margin-top:6px}.form-actions{display:flex;gap:9px;margin-top:12px;padding-top:15px;border-top:1px solid var(--line)}.report-box{background:#fff;border:1px solid #dbe8e3;border-radius:14px;padding:16px 18px;margin:12px 0;box-shadow:0 2px 10px #00000008}.report-box h3{margin:0 0 12px;color:#1c5f4c;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.report-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-top:1px solid #edf2f0}.report-row:first-child{border-top:0}.report-info{min-width:0;line-height:1.6}.report-actions{display:flex;gap:6px;flex-shrink:0}.action-edit{background:#176b52!important}.action-delete{background:#b42318!important}.report-actions button{min-width:38px}.table-wrap table{background:#fff;border-radius:10px;overflow:hidden}.table-wrap th{font-size:13px}.table-wrap td{vertical-align:middle}.table-actions{white-space:nowrap}.table-actions button{margin-right:4px}
 @media(max-width:700px){.page-hero{align-items:flex-start;flex-direction:column}.page-hero .actions{width:100%}.page-hero button{flex:1}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.filter-card{align-items:stretch;flex-direction:column;gap:6px}.search-row{flex-direction:column}.report-row{align-items:flex-start;flex-direction:column}.report-actions{width:100%}.report-actions button{flex:1}.form-head{gap:10px}.form-head button{white-space:nowrap}}
 </style>
-<meta name="app-version" content="wali-fix-2026-09-01-v2">
 </head>
 <body>
 <div id="startupError" style="display:none;position:fixed;inset:0;background:#f3f7f5;z-index:99999;padding:30px;font-family:Arial,sans-serif">
@@ -64,54 +63,46 @@ async function logout(){await db.auth.signOut();$('adminApp').classList.add('hid
 function goAdmin(page){document.querySelectorAll('.content-page').forEach(x=>x.classList.remove('active'));const target=$('page-'+page);if(target)target.classList.add('active');document.querySelectorAll('.side-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const titles={dashboard:['Dashboard Utama','Ringkasan data siswa'],kelas:['Data Kelas','Jumlah dan daftar siswa berdasarkan kelas'],tahfidz:['Data Tahfidz','Laporan hafalan setiap siswa'],alquran:['Data Al-Qur\'an','Data pelajaran dan nilai setiap siswa'],edit:['Edit Data Siswa','Ubah data siswa dan PIN']};if(titles[page]){$('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1]}if(page==='kelas')renderClasses();if(page==='tahfidz')renderTahfizPage();if(page==='alquran')renderPelajaranPage();if(page==='edit')renderEditStudents();window.scrollTo(0,0)}
 async function waliLogin(){
   const e=$('we'),r=$('wresult');
-  e.style.display='none';r.innerHTML='';
-  const name=v('wnama'),pin=v('wpin');
+  e.style.display='none'; e.textContent=''; r.innerHTML='';
+  const name=v('wnama').trim(), pin=v('wpin').trim();
   if(!name||!pin){e.style.display='block';e.textContent='Nama dan PIN wajib diisi.';return}
   try{
-    /* Cari identitas siswa terlebih dahulu */
+    // 1. Cari siswa berdasarkan nama + PIN.
     const wali=await db.rpc('cari_data_wali',{p_nama:name,p_pin:pin});
-    if(wali.error) throw new Error('cari_data_wali: '+wali.error.message);
+    if(wali.error) throw new Error('Pencarian siswa gagal: '+wali.error.message);
     const x=wali.data&&wali.data[0];
-    if(!x){
-      e.style.display='block';
-      e.textContent='Nama atau PIN tidak cocok. Pastikan penulisan nama sama seperti di data siswa.';
-      return;
-    }
+    if(!x){e.style.display='block';e.textContent='Nama atau PIN salah. Pastikan nama ditulis persis seperti data sekolah.';return}
 
     currentStudent=x;
-
-    /* Ambil laporan Tahfidz lewat RPC yang sudah terbukti mengembalikan data */
-    const tah=await db.rpc('cari_tahfiz_wali',{p_nama:name,p_pin:pin});
-    if(tah.error) throw new Error('cari_tahfiz_wali: '+tah.error.message);
-    currentTahfiz=tah.data||[];
-
-    /* Ambil laporan Al-Qur'an berdasarkan id siswa */
     const siswaId=Number(x.id ?? x.siswa_id);
-    currentPelajaran=[];
-    if(Number.isFinite(siswaId)){
-      const pel=await db.from('pelajaran_quran').select('*').eq('siswa_id',siswaId).order('tanggal',{ascending:false});
-      if(pel.error){
-        console.warn('Data Al-Qur\'an tidak dapat dibaca:',pel.error.message);
-      }else{
-        currentPelajaran=pel.data||[];
-      }
-    }
+    if(!Number.isInteger(siswaId)){throw new Error('ID siswa tidak valid dari data wali.');}
 
-    r.innerHTML=
-      '<div class="student-head"><h2>👦 '+safe(x.nama||name)+'</h2><span class="badge">Kelas '+safe(x.kelas||'-')+'</span></div>'+
-      '<h2 class="center">Data Anak</h2>'+
-      '<p class="center">Laporan Tahfidz dan Al-Qur\'an.</p>'+
-      '<div class="choice-grid">'+
-        '<button class="choice" onclick="showWaliData(\'tahfidz\')">📖<br><b>Data Tahfidz</b><small>'+currentTahfiz.length+' laporan</small></button>'+
-        '<button class="choice" onclick="showWaliData(\'alquran\')">📚<br><b>Data Al-Qur\'an</b><small>'+currentPelajaran.length+' laporan</small></button>'+
-      '</div>'+
-      '<div id="waliCombined"></div>';
+    // 2. Tahfidz: gunakan RPC yang memang sudah tersedia untuk akses wali.
+    const tah=await db.rpc('cari_tahfiz_wali',{p_nama:x.nama,p_pin:String(x.pin ?? pin)});
+    if(tah.error) throw new Error('Data Tahfidz gagal diambil: '+tah.error.message);
+    currentTahfiz=Array.isArray(tah.data)?tah.data:[];
 
-    /* Langsung tampilkan laporan agar wali tidak harus menekan tombol */
+    // 3. Al-Qur'an: ambil berdasarkan ID siswa yang sudah terverifikasi.
+    // Jangan menyembunyikan error RLS/permission sebagai data kosong.
+    const pel=await db.from('pelajaran_quran')
+      .select('*')
+      .eq('siswa_id',siswaId)
+      .order('tanggal',{ascending:false});
+    if(pel.error) throw new Error('Data Al-Qur\'an gagal diambil: '+pel.error.message);
+    currentPelajaran=Array.isArray(pel.data)?pel.data:[];
+
+    r.innerHTML=`<div class="student-head"><h2>👦 ${safe(x.nama||name)}</h2><span class="badge">Kelas ${safe(x.kelas||'-')}</span></div>
+      <h2 class="center">Data Anak</h2>
+      <p class="center">Laporan Tahfidz dan Al-Qur'an.</p>
+      <div class="choice-grid">
+        <button class="choice" onclick="showWaliData('tahfidz')">📖<br><b>Data Tahfidz</b><small>${currentTahfiz.length} laporan</small></button>
+        <button class="choice" onclick="showWaliData('alquran')">📚<br><b>Data Al-Qur'an</b><small>${currentPelajaran.length} laporan</small></button>
+      </div>
+      <div id="waliCombined"></div>`;
+
     $('waliCombined').innerHTML=renderCombined(currentStudent,currentTahfiz,currentPelajaran,true);
-
   }catch(err){
-    console.error(err);
+    console.error('waliLogin:',err);
     e.style.display='block';
     e.textContent=err.message||'Terjadi kesalahan saat mengambil data.';
   }
@@ -124,7 +115,7 @@ function renderWaliData(type){
   const s=currentStudent;
   if(!s)return '';
   const isTah=type==='tahfidz';
-  const title=isTah?'📖 Data Tahfidz':'📚 Data Al-Qur\'an';
+  const title=isTah?'📖 Data Tahfidz':"📚 Data Al-Qur'an";
   const rows=isTah?currentTahfiz:currentPelajaran;
   let html='';
   if(isTah){
@@ -136,7 +127,7 @@ function renderWaliData(type){
       return '<div class="wali-report"><div><b>📅 '+safe(t.bulan||'-')+'</b><div>Mulai: '+safe(ms)+' ayat '+safe(ma)+' → Sampai: '+safe(ss)+' ayat '+safe(sa)+'</div><small>'+safe(t.keterangan||'-')+'</small></div></div>';
     }).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
   }else{
-    html=rows.length?rows.map(function(p){return '<div class="wali-report"><div><b>📅 '+formatTanggal(p.tanggal)+'</b><div>'+safe(p.materi||'-')+'</div></div><strong class="score">'+safe(p.nilai??'-')+'</strong></div>';}).join(''):'<div class="empty">Belum ada data Al-Qur\'an.</div>';
+    html=rows.length?rows.map(function(p){return '<div class="wali-report"><div><b>📅 '+formatTanggal(p.tanggal)+'</b><div>'+safe(p.materi||'-')+'</div></div><strong class="score">'+safe(p.nilai??'-')+'</strong></div>';}).join(''):"<div class='empty'>Belum ada data Al-Qur'an.</div>";
   }
   return '<div class="card wali-data-card"><div class="card-head"><div><h2 class="section-title">'+title+'</h2><p class="muted">'+safe(s.nama||'-')+' — Kelas '+safe(s.kelas||'-')+'</p></div><button class="blue" onclick="printWaliData(\''+type+'\')">🖨️ Print</button></div>'+html+'</div>';
 }
@@ -148,9 +139,9 @@ function renderCombined(s,tah,pel,isWali){
     const sa=t.sampai_ayat??t.ayat??'-';
     return '<div class="report-box"><div class="report-month">📅 '+safe(t.bulan||'-')+'</div><div class="item"><b>Mulai:</b> '+safe(ms)+' ayat '+safe(ma)+'</div><div class="item"><b>Sampai:</b> '+safe(ss)+' ayat '+safe(sa)+'</div><div class="item"><b>Keterangan:</b> '+safe(t.keterangan||'-')+'</div></div>';
   }).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
-  const pelHTML=pel.length?'<div class="table-wrap"><table><tr><th>Tanggal</th><th>Materi</th><th>Nilai</th></tr>'+pel.map(function(p){return '<tr><td>'+formatTanggal(p.tanggal)+'</td><td>'+safe(p.materi||'-')+'</td><td class="score">'+safe(p.nilai??'-')+'</td></tr>';}).join('')+'</table></div>':'<div class="empty">Belum ada data Al-Qur\'an.</div>';
+  const pelHTML=pel.length?'<div class="table-wrap"><table><tr><th>Tanggal</th><th>Materi</th><th>Nilai</th></tr>'+pel.map(function(p){return '<tr><td>'+formatTanggal(p.tanggal)+'</td><td>'+safe(p.materi||'-')+'</td><td class="score">'+safe(p.nilai??'-')+'</td></tr>';}).join('')+'</table></div>':"<div class='empty'>Belum ada data Al-Qur'an.</div>";
   const printFn=isWali?'printWaliCombined()':'printStudentDashboard()';
-  return '<hr><div class="actions" style="margin-bottom:12px"><button class="blue" onclick="'+printFn+'">🖨️ Print Data</button></div><div class="grid2"><div class="panel"><h2>📖 Data Tahfidz</h2>'+tahHTML+'</div><div class="panel"><h2>📚 Data Al-Qur\'an</h2>'+pelHTML+'</div></div>';
+  return `<hr><div class="actions" style="margin-bottom:12px"><button class="blue" onclick="${printFn}">🖨️ Print Data</button></div><div class="grid2"><div class="panel"><h2>📖 Data Tahfidz</h2>${tahHTML}</div><div class="panel"><h2>📚 Data Al-Qur'an</h2>${pelHTML}</div></div>`;
 }
 async function loadAdmin(){try{const {data,error}=await db.from('siswa').select('*').order('nama');if(error)throw error;students=data||[];$('total').textContent=students.length;$('laki').textContent=students.filter(x=>x.jk==='Laki-laki').length;$('perempuan').textContent=students.filter(x=>x.jk==='Perempuan').length;$('totalKelas').textContent=getClasses().length;await loadAllReports();renderDashboard();renderClasses();renderEditStudents()}catch(e){alert('Gagal memuat data siswa: '+(e.message||e))}}
 async function loadAllReports(){const tah=await db.from('tahfiz').select('*').order('id',{ascending:false});const pel=await db.from('pelajaran_quran').select('*').order('tanggal',{ascending:false});allTahfiz=tah.error?[]:(tah.data||[]);allPelajaran=pel.error?[]:(pel.data||[])}
