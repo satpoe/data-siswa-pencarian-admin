@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Data Al-Qur'an - SDIT An-Nahl</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box} :root{--green:#176b52;--soft:#f1f7f4;--line:#dce8e3;--text:#24332d} body{margin:0;font-family:Arial,sans-serif;background:#f3f7f5;color:var(--text)} button,input,select,textarea{font-family:inherit} button{border:0;border-radius:9px;padding:10px 15px;background:var(--green);color:#fff;cursor:pointer;font-weight:bold} button:hover{filter:brightness(.96)} button.gray{background:#68756f}button.red{background:#b42318}button.blue{background:#2563eb}button.small{padding:7px 10px;font-size:12px}button.big{padding:15px 22px;font-size:16px;min-width:220px}input,select,textarea{width:100%;padding:11px;border:1px solid #d7e0dc;border-radius:8px;margin:5px 0 12px;font-size:15px;background:#fff}label{font-weight:bold;font-size:14px}.hidden{display:none!important}.actions{display:flex;gap:8px;flex-wrap:wrap}.center{text-align:center}.error{display:none;background:#fff0f0;color:#a61b1b;padding:11px;border-radius:8px;margin:12px 0}.ok{display:none;background:#edf9f3;color:var(--green);padding:11px;border-radius:8px;margin:12px 0}.badge{display:inline-block;background:#e5f3ed;color:var(--green);padding:5px 9px;border-radius:20px;font-size:12px}.empty{padding:13px;background:#f5faf8;border-left:4px solid var(--green);color:#445;border-radius:6px}.score{font-size:19px;font-weight:bold;color:var(--green)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:9px;border-bottom:1px solid #eee;text-align:left;font-size:14px}th{background:#edf7f2;color:var(--green)}.report-box{border:1px solid var(--line);border-radius:12px;padding:14px;margin:10px 0;background:#f9fcfa}.report-month{font-weight:bold;color:var(--green);font-size:16px;margin-bottom:8px}.item{margin:6px 0}.student-head{background:#f5faf8;border-radius:12px;padding:15px;margin:12px 0}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}.panel{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfdfc}.card{background:#fff;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 3px 16px #0001}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{padding:16px;background:#edf7f2;border-radius:12px}.stat b{font-size:25px;display:block;color:var(--green);margin-bottom:4px}.dashboard-grid{display:grid;grid-template-columns:1.1fr 1.5fr;gap:18px}.class-list,.student-list{display:grid;gap:9px}.class-item,.student-item{padding:13px;border:1px solid var(--line);border-radius:11px;background:#f5faf8;cursor:pointer}.class-item:hover,.student-item:hover{background:#edf7f2}.student-item{display:flex;justify-content:space-between;align-items:center;gap:10px;background:#fff}.student-name{font-weight:bold;color:var(--green)}.notice{padding:10px 12px;background:#edf7f2;border-radius:9px;margin-bottom:10px}.section-title{color:var(--green);margin:0 0 10px}.public-header{background:var(--green);color:#fff;padding:22px;text-align:center}.logo{width:75px;height:75px;object-fit:contain;background:#fff;border-radius:50%;padding:5px}.public-wrap{max-width:900px;margin:25px auto;padding:0 15px}.admin-layout{display:flex;min-height:100vh}.sidebar{width:230px;flex:0 0 230px;background:#fff;border-right:1px solid #dce8e3;min-height:100vh;padding:18px 12px;position:sticky;top:0;align-self:flex-start}.brand{background:#176b52;color:#fff;border-radius:14px;padding:17px 14px;margin-bottom:14px;text-align:center}.brand img{width:55px;height:55px;background:#fff;border-radius:50%;padding:3px;object-fit:contain}.brand h2{font-size:18px;margin:9px 0 3px}.brand small{opacity:.9}.admin-label{font-weight:bold;font-size:19px;padding:10px 12px 12px}.side-btn{width:100%;text-align:left;margin:4px 0;background:#f1f7f4;color:#17241f;padding:10px 12px;border-radius:9px}.side-btn:hover{background:#e5f1ec}.side-btn.active{background:var(--green);color:#fff}.side-btn.logout{background:#fff0f0;color:#9b1c1c}.main{flex:1;min-width:0;padding:22px 25px;max-width:1400px}.topbar{background:#fff;border-radius:15px;padding:16px 20px;margin-bottom:18px;box-shadow:0 2px 12px #0001;display:flex;justify-content:space-between;align-items:center;gap:15px}.topbar h1{font-size:25px;margin:0 0 4px;color:#18241f}.topbar p{margin:0;color:#68756f}.content-page{display:none}.content-page.active{display:block}.summary-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.summary-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:17px}.summary-card h3{margin:0 0 10px;color:var(--green)}.summary-card .big-number{font-size:31px;font-weight:bold}#waliPage{max-width:900px;margin:25px auto;padding:0 15px}.choice-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.choice{min-height:110px;font-size:17px}#printArea{display:none}@media(max-width:900px){.sidebar{width:220px;flex-basis:220px}.stats{grid-template-columns:repeat(2,1fr)}.dashboard-grid,.grid2{grid-template-columns:1fr}}@media(max-width:700px){.admin-layout{display:block}.sidebar{position:relative;width:100%;min-height:auto;border-right:0;border-bottom:1px solid #dce8e3}.main{padding:12px}.stats,.summary-grid,.choice-grid{grid-template-columns:1fr}.topbar{align-items:flex-start;flex-direction:column}.student-item{align-items:flex-start;flex-direction:column}}
+.student-picker{position:relative}.student-picker input{margin:0}.picker-results{position:absolute;left:0;right:0;top:48px;z-index:20;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 22px #0002;overflow:hidden}.picker-option{width:100%;display:flex;justify-content:space-between;align-items:center;text-align:left;background:#fff;color:var(--text);border-radius:0;padding:11px 13px;border-bottom:1px solid #edf2f0}.picker-option:hover{background:#edf7f2}.picker-option small{color:#718079}.picker-selected{margin-top:8px;padding:10px 12px;background:#edf7f2;border:1px solid #cfe5db;border-radius:9px;color:var(--green);font-weight:bold}.picker-clear{float:right;background:transparent;color:#68756f;padding:0 4px;font-size:18px}.alquran-student{padding:16px 18px}.student-report-head{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;border-bottom:1px solid #e9f0ed}.student-report-head h3{margin:0 0 7px}.report-count{font-size:12px;color:#718079;background:#f1f7f4;padding:6px 9px;border-radius:20px}.alquran-report-row{display:grid;grid-template-columns:150px 1fr 90px auto;align-items:center;gap:15px;padding:13px 0;border-bottom:1px solid #edf2f0}.alquran-report-row:last-child{border-bottom:0}.alquran-date{display:flex;align-items:center;gap:8px;color:var(--green)}.alquran-date span{font-size:20px}.alquran-detail b{display:block;color:#263c34}.alquran-detail small{color:#84918c}.alquran-score{background:#edf7f2;border-radius:10px;text-align:center;padding:7px}.alquran-score span{display:block;font-size:11px;color:#718079}.alquran-score strong{font-size:21px;color:var(--green)}.wali-data-card{margin-top:14px}.wali-report{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #edf2f0;line-height:1.6}.wali-report:last-child{border-bottom:0}.choice small{display:block;margin-top:7px;font-weight:normal;opacity:.8}
+@media print{body{background:#fff}body>*{display:none!important}#printArea{display:block!important;padding:20px;color:#000}#printArea table{display:table!important}#printArea .report-box{page-break-inside:avoid}}
+
+/* ===== Tampilan baru yang lebih rapi ===== */
+.muted{color:#718079;margin:4px 0 0}.card-head{display:flex;justify-content:space-between;align-items:center;gap:15px}.dashboard-search{padding:18px 20px}.dashboard-search h2{margin:0;color:var(--green);font-size:20px}.dashboard-search p{margin:4px 0 12px;color:#718079}.search-row{display:flex;gap:10px}.search-row input{margin:0;flex:1}.stats{margin:18px 0}.stat{position:relative;padding:18px 18px 16px 56px;background:#fff;border:1px solid var(--line);box-shadow:0 2px 10px #00000008}.stat b{font-size:28px;margin-bottom:2px}.stat>span:last-child{color:#6b7772;font-size:13px}.stat-icon{position:absolute;left:17px;top:20px;font-size:25px}.summary-card{position:relative;min-height:145px;padding:18px 18px 16px 56px;background:linear-gradient(180deg,#fff,#f9fcfb)}.summary-card>span{position:absolute;left:18px;top:18px;font-size:27px}.summary-card h3{margin:0 0 7px}.page-hero{background:linear-gradient(135deg,#176b52,#218163);color:#fff;border-radius:17px;padding:22px 24px;margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 5px 18px #176b5226}.page-hero h2{margin:3px 0 5px;font-size:25px}.page-hero p{margin:0;opacity:.88}.page-hero .eyebrow,.form-head .eyebrow{font-size:11px;font-weight:bold;letter-spacing:1.2px;opacity:.75}.page-hero button{background:#fff;color:var(--green)}.page-hero button.blue{background:#2563eb;color:#fff}.filter-card{padding:14px 18px;margin-bottom:14px;display:flex;align-items:center;gap:15px}.filter-card input{margin:0;flex:1}.filter-label{font-weight:bold;color:var(--green);white-space:nowrap}.form-card{border:2px solid #cfe5db;box-shadow:0 7px 25px #176b5214}.form-head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}.form-head h2{margin:3px 0 0;color:var(--green);font-size:21px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 18px}.field.full{grid-column:1/-1}.field label{display:block;margin-top:6px;color:#34443d}.field input,.field select{margin-top:6px}.form-actions{display:flex;gap:9px;margin-top:12px;padding-top:15px;border-top:1px solid var(--line)}.report-box{background:#fff;border:1px solid #dbe8e3;border-radius:14px;padding:16px 18px;margin:12px 0;box-shadow:0 2px 10px #00000008}.report-box h3{margin:0 0 12px;color:#1c5f4c;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.report-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:12px 0;border-top:1px solid #edf2f0}.report-row:first-child{border-top:0}.report-info{min-width:0;line-height:1.6}.report-actions{display:flex;gap:6px;flex-shrink:0}.action-edit{background:#176b52!important}.action-delete{background:#b42318!important}.report-actions button{min-width:38px}.table-wrap table{background:#fff;border-radius:10px;overflow:hidden}.table-wrap th{font-size:13px}.table-wrap td{vertical-align:middle}.table-actions{white-space:nowrap}.table-actions button{margin-right:4px}
+@media(max-width:700px){.page-hero{align-items:flex-start;flex-direction:column}.page-hero .actions{width:100%}.page-hero button{flex:1}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.filter-card{align-items:stretch;flex-direction:column;gap:6px}.search-row{flex-direction:column}.report-row{align-items:flex-start;flex-direction:column}.report-actions{width:100%}.report-actions button{flex:1}.form-head{gap:10px}.form-head button{white-space:nowrap}}
+</style>
+<meta name="app-version" content="wali-fix-2026-09-01-v2">
+</head>
+<body>
+<div id="startupError" style="display:none;position:fixed;inset:0;background:#f3f7f5;z-index:99999;padding:30px;font-family:Arial,sans-serif">
+  <div style="max-width:700px;margin:40px auto;background:#fff;padding:25px;border-radius:14px;box-shadow:0 3px 16px #0002">
+    <h2 style="color:#b42318;margin-top:0">Aplikasi tidak dapat dimuat</h2>
+    <p id="startupErrorText">Terjadi kesalahan saat memuat aplikasi.</p>
+    <p>Pastikan file dibuka sebagai <b>.html</b> dan perangkat terhubung ke internet.</p>
+    <button onclick="location.reload()">Coba Lagi</button>
+  </div>
+</div>
+<div id="publicApp"><header class="public-header"><img src="logo.jpeg" class="logo" alt="Logo SDIT An-Nahl"><h1 style="margin:8px 0 4px">Data Al-Qur'an</h1><div>SDIT AN-NAHL SERI KUALA LOBAM</div></header><div class="public-wrap">
+<div id="home" class="card center"><h2>Selamat Datang</h2><p>Silakan pilih akses.</p><div class="actions" style="justify-content:center"><button class="big" onclick="showPublic('wali')">🔎 Pencarian Wali</button><button class="big" onclick="showPublic('login')">👨‍🏫 Admin</button></div></div>
+<div id="wali" class="card hidden"><button class="gray" onclick="showPublic('home')">← Kembali</button><h2 class="center">Pencarian Wali</h2><p class="center">Masukkan nama anak dan PIN dari sekolah.</p><input id="wnama" placeholder="Nama lengkap anak"><input id="wpin" type="password" inputmode="numeric" placeholder="PIN"><div class="center"><button onclick="waliLogin()">Lihat Data Anak</button></div><div id="we" class="error"></div><div id="wresult"></div></div>
+<div id="login" class="card hidden"><button class="gray" onclick="showPublic('home')">← Kembali</button><h2>Login Admin</h2><input id="email" type="email" placeholder="Email admin"><input id="password" type="password" placeholder="Password"><button onclick="adminLogin()">Login</button><div id="le" class="error"></div></div>
+</div></div>
+<div id="adminApp" class="hidden"><div class="admin-layout"><aside class="sidebar"><div class="brand"><img src="logo.jpeg" alt="Logo"><h2>SDIT AN-NAHL</h2><small>SERI KUALA LOBAM</small></div><div class="admin-label">👨‍🏫 Admin</div><button class="side-btn active" data-page="dashboard" onclick="goAdmin('dashboard')">📊 Dashboard Utama</button><button class="side-btn" data-page="kelas" onclick="goAdmin('kelas')">🏫 Data Kelas</button><button class="side-btn" data-page="tahfidz" onclick="goAdmin('tahfidz')">📖 Data Tahfidz</button><button class="side-btn" data-page="alquran" onclick="goAdmin('alquran')">📚 Data Al-Qur'an</button><button class="side-btn" data-page="edit" onclick="goAdmin('edit')">⚙️ Edit Data Siswa</button><button class="side-btn logout" onclick="logout()">🚪 Keluar</button></aside>
+<main class="main"><div class="topbar"><div><h1 id="pageTitle">Dashboard Utama</h1><p id="pageSub">Ringkasan data siswa</p></div><span class="badge">👨‍🏫 Admin</span></div>
+<section id="page-dashboard" class="content-page active"><div class="card dashboard-search"><div class="card-head"><div><h2 class="section-title">🔎 Pencarian Siswa</h2><p class="muted">Cari nama atau kelas untuk melihat data siswa.</p></div></div><div class="search-row"><input id="dashSearch" autocomplete="off" oninput="renderDashSearch()" placeholder="Ketik nama siswa atau kelas..."></div><div id="dashSearchResults"></div></div><div id="studentDashboard" class="card hidden"><div class="card-head"><div><h2 class="section-title">👨‍🎓 Data Siswa</h2></div><button class="gray small" onclick="closeStudentDashboard()">✕ Tutup</button></div><div id="studentDashboardContent"></div></div><div class="stats"><div class="stat"><span class="stat-icon">👨‍🎓</span><b id="total">0</b><span>Total Siswa</span></div><div class="stat"><span class="stat-icon">👦</span><b id="laki">0</b><span>Laki-laki</span></div><div class="stat"><span class="stat-icon">👧</span><b id="perempuan">0</b><span>Perempuan</span></div><div class="stat"><span class="stat-icon">🏫</span><b id="totalKelas">0</b><span>Total Kelas</span></div></div><div class="card"><div class="card-head"><div><h2 class="section-title">📊 Jumlah Siswa Per Kelas</h2><p class="muted">Ringkasan jumlah siswa pada setiap kelas.</p></div></div><div id="dashboardClasses">Memuat...</div></div></section>
+<section id="page-kelas" class="content-page"><div class="card"><div class="actions" style="justify-content:space-between"><div><h2 class="section-title">🏫 Data Berdasarkan Kelas</h2><p>Tekan kelas untuk melihat jumlah dan data Tahfidz + Al-Qur'an.</p></div><button class="blue" onclick="printClassDashboard()">🖨️ Print</button></div><div class="dashboard-grid"><div class="panel"><h3>Daftar Kelas</h3><div id="classList" class="class-list">Memuat kelas...</div></div><div class="panel"><h3 id="classTitle">Pilih Kelas</h3><div id="classData" class="empty">Pilih kelas di sebelah kiri.</div></div></div></div></section>
+<section id="page-tahfidz" class="content-page"><div class="page-hero"><div><span class="eyebrow">LAPORAN HAFALAN</span><h2>📖 Data Tahfidz</h2><p>Kelola laporan hafalan siswa. Bisa tambah, edit, hapus, dan cetak.</p></div><div class="actions"><button onclick="newTahfiz()">＋ Tambah Laporan</button><button class="blue" onclick="printTahfizPage()">🖨️ Print</button></div></div><div class="card filter-card"><div class="filter-label">🔎 Cari Siswa</div><input id="tahfizSearch" oninput="renderTahfizPage()" placeholder="Ketik nama siswa..."></div><div id="tahfizPageList">Memuat...</div><div id="tahfizFormCard" class="card form-card hidden"><div class="form-head"><div><span class="eyebrow">FORM LAPORAN</span><h2 id="tahfizFormTitle">➕ Tambah Laporan Tahfidz</h2></div><button class="gray" onclick="cancelTahfizForm()">✕ Tutup</button></div><div class="form-grid"><div class="field full"><label>Siswa *</label><div class="student-picker"><input id="tahfizSiswaSearch" autocomplete="off" placeholder="🔎 Ketik nama siswa..." oninput="filterStudentPicker('tahfiz')"><input type="hidden" id="tahfizSiswa"><div id="tahfizSiswaResults" class="picker-results"></div><div id="tahfizSiswaSelected" class="picker-selected hidden"></div></div></div><div class="field"><label>Bulan</label><input id="tahfizBulan" placeholder="Contoh: September 2026"></div><div class="field"><label>Keterangan</label><input id="tahfizKeterangan" placeholder="Contoh: Lancar / perlu murojaah"></div><div class="field"><label>Mulai Surah</label><input id="tahfizMulaiSurah" placeholder="Contoh: Al-Baqarah"></div><div class="field"><label>Mulai Ayat</label><input id="tahfizMulaiAyat" inputmode="numeric" placeholder="Nomor ayat"></div><div class="field"><label>Sampai Surah</label><input id="tahfizSampaiSurah" placeholder="Contoh: Al-Baqarah"></div><div class="field"><label>Sampai Ayat</label><input id="tahfizSampaiAyat" inputmode="numeric" placeholder="Nomor ayat"></div></div><div class="form-actions"><button onclick="saveTahfiz()">💾 Simpan Laporan</button><button class="gray" onclick="cancelTahfizForm()">Batal</button></div><input type="hidden" id="tahfizId"><div id="tahfizError" class="error"></div><div id="tahfizOk" class="ok"></div></div></section>
+<section id="page-alquran" class="content-page"><div class="page-hero"><div><span class="eyebrow">LAPORAN PEMBELAJARAN</span><h2>📚 Data Al-Qur'an</h2><p>Kelola tanggal, materi, dan nilai pembelajaran Al-Qur'an.</p></div><div class="actions"><button onclick="newPelajaran()">＋ Tambah Laporan</button><button class="blue" onclick="printPelajaranPage()">🖨️ Print</button></div></div><div class="card filter-card"><div class="filter-label">🔎 Cari Siswa</div><input id="alquranSearch" oninput="renderPelajaranPage()" placeholder="Ketik nama siswa..."></div><div id="alquranPageList">Memuat...</div><div id="alquranFormCard" class="card form-card hidden"><div class="form-head"><div><span class="eyebrow">FORM LAPORAN</span><h2 id="alquranFormTitle">➕ Tambah Laporan Al-Qur'an</h2></div><button class="gray" onclick="cancelPelajaranForm()">✕ Tutup</button></div><div class="form-grid"><div class="field full"><label>Siswa *</label><div class="student-picker"><input id="alquranSiswaSearch" autocomplete="off" placeholder="🔎 Ketik nama siswa..." oninput="filterStudentPicker('alquran')"><input type="hidden" id="alquranSiswa"><div id="alquranSiswaResults" class="picker-results"></div><div id="alquranSiswaSelected" class="picker-selected hidden"></div></div></div><div class="field"><label>Tanggal *</label><input id="alquranTanggal" type="date"></div><div class="field"><label>Nilai</label><input id="alquranNilai" inputmode="decimal" placeholder="Contoh: 90"></div><div class="field full"><label>Materi *</label><input id="alquranMateri" placeholder="Contoh: Tajwid / Surah Al-Baqarah"></div></div><div class="form-actions"><button onclick="savePelajaran()">💾 Simpan Laporan</button><button class="gray" onclick="cancelPelajaranForm()">Batal</button></div><input type="hidden" id="alquranId"><div id="alquranError" class="error"></div><div id="alquranOk" class="ok"></div></div></section>
+<section id="page-edit" class="content-page"><div class="card"><h2 class="section-title">⚙️ Edit Data Siswa</h2><p>Cari nama siswa, lalu tekan <b>Edit</b>. PIN juga dapat diubah di sini.</p><input id="editSearch" oninput="renderEditStudents()" placeholder="🔎 Cari nama atau kelas..."><div id="editStudentList" class="student-list"></div><hr><h3 id="formtitle">➕ Tambah / Edit Siswa</h3><input type="hidden" id="sid"><div class="grid2"><div><label>Nama *</label><input id="nama"><label>Kelas</label><input id="kelas"><label>Jenis Kelamin</label><select id="jk"><option>Laki-laki</option><option>Perempuan</option></select><label>PIN Wali *</label><input id="pin" inputmode="numeric"></div><div><label>Tempat/Tanggal Lahir</label><input id="ttl"><label>Alamat</label><input id="alamat"><label>Nama Ayah</label><input id="ayah"><label>Nama Ibu</label><input id="ibu"></div></div><div class="actions"><button onclick="saveStudent()">💾 Simpan</button><button class="gray" onclick="clearForm()">Bersihkan</button></div><div id="ae" class="error"></div><div id="ok" class="ok"></div></div></section>
+</main></div></div><div id="printArea"></div>
+<script>
+'use strict';
+let db = null;
+
+function initSupabase(){
+    if(window.supabase && window.supabase.createClient){
+        db = window.supabase.createClient(
+            "https://uepbvyzqrhhvgzktxkmg.supabase.co",
+            "sb_publishable_WBsGgAeaYivEAv7xL7qF_A_ilXHg2X-"
+        );
+        return true;
+    }
+
+    console.error("Supabase gagal dimuat.");
+    return false;
+}
+let students=[],currentStudent=null,currentTahfiz=[],currentPelajaran=[],currentClass="",classDashboardData=[],allTahfiz=[],allPelajaran=[];
+const $=id=>document.getElementById(id); const v=id=>{const e=$(id);return e?e.value.trim():''};
+function safe(x){return String(x??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function formatTanggal(t){if(!t)return '-';const d=new Date(t+'T00:00:00');return isNaN(d)?safe(t):d.toLocaleDateString('id-ID',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function showPublic(id){['home','wali','login'].forEach(x=>$(x).classList.add('hidden'));$(id).classList.remove('hidden')}
+async function adminLogin(){const email=v('email'),password=$('password').value;if(!email||!password){$('le').style.display='block';$('le').textContent='Email dan password wajib diisi.';return}try{const {error}=await db.auth.signInWithPassword({email,password});if(error)throw error;$('le').style.display='none';$('publicApp').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadAdmin();goAdmin('dashboard')}catch(e){$('le').style.display='block';$('le').textContent=e.message||'Login gagal.'}}
+async function logout(){await db.auth.signOut();$('adminApp').classList.add('hidden');$('publicApp').classList.remove('hidden');showPublic('home')}
+function goAdmin(page){document.querySelectorAll('.content-page').forEach(x=>x.classList.remove('active'));const target=$('page-'+page);if(target)target.classList.add('active');document.querySelectorAll('.side-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const titles={dashboard:['Dashboard Utama','Ringkasan data siswa'],kelas:['Data Kelas','Jumlah dan daftar siswa berdasarkan kelas'],tahfidz:['Data Tahfidz','Laporan hafalan setiap siswa'],alquran:['Data Al-Qur\'an','Data pelajaran dan nilai setiap siswa'],edit:['Edit Data Siswa','Ubah data siswa dan PIN']};if(titles[page]){$('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1]}if(page==='kelas')renderClasses();if(page==='tahfidz')renderTahfizPage();if(page==='alquran')renderPelajaranPage();if(page==='edit')renderEditStudents();window.scrollTo(0,0)}
+async function waliLogin(){
+  const e=$('we'),r=$('wresult');
+  e.style.display='none';r.innerHTML='';
+  const name=v('wnama'),pin=v('wpin');
+  if(!name||!pin){e.style.display='block';e.textContent='Nama dan PIN wajib diisi.';return}
+  try{
+    /* Cari identitas siswa terlebih dahulu */
+    const wali=await db.rpc('cari_data_wali',{p_nama:name,p_pin:pin});
+    if(wali.error) throw new Error('cari_data_wali: '+wali.error.message);
+    const x=wali.data&&wali.data[0];
+    if(!x){
+      e.style.display='block';
+      e.textContent='Nama atau PIN tidak cocok. Pastikan penulisan nama sama seperti di data siswa.';
+      return;
+    }
+
+    currentStudent=x;
+
+    /* Ambil laporan Tahfidz lewat RPC yang sudah terbukti mengembalikan data */
+    const tah=await db.rpc('cari_tahfiz_wali',{p_nama:name,p_pin:pin});
+    if(tah.error) throw new Error('cari_tahfiz_wali: '+tah.error.message);
+    currentTahfiz=tah.data||[];
+
+    /* Ambil laporan Al-Qur'an berdasarkan id siswa */
+    const siswaId=Number(x.id ?? x.siswa_id);
+    currentPelajaran=[];
+    if(Number.isFinite(siswaId)){
+      const pel=await db.from('pelajaran_quran').select('*').eq('siswa_id',siswaId).order('tanggal',{ascending:false});
+      if(pel.error){
+        console.warn('Data Al-Qur\'an tidak dapat dibaca:',pel.error.message);
+      }else{
+        currentPelajaran=pel.data||[];
+      }
+    }
+
+    r.innerHTML=
+      '<div class="student-head"><h2>👦 '+safe(x.nama||name)+'</h2><span class="badge">Kelas '+safe(x.kelas||'-')+'</span></div>'+
+      '<h2 class="center">Data Anak</h2>'+
+      '<p class="center">Laporan Tahfidz dan Al-Qur\'an.</p>'+
+      '<div class="choice-grid">'+
+        '<button class="choice" onclick="showWaliData(\'tahfidz\')">📖<br><b>Data Tahfidz</b><small>'+currentTahfiz.length+' laporan</small></button>'+
+        '<button class="choice" onclick="showWaliData(\'alquran\')">📚<br><b>Data Al-Qur\'an</b><small>'+currentPelajaran.length+' laporan</small></button>'+
+      '</div>'+
+      '<div id="waliCombined"></div>';
+
+    /* Langsung tampilkan laporan agar wali tidak harus menekan tombol */
+    $('waliCombined').innerHTML=renderCombined(currentStudent,currentTahfiz,currentPelajaran,true);
+
+  }catch(err){
+    console.error(err);
+    e.style.display='block';
+    e.textContent=err.message||'Terjadi kesalahan saat mengambil data.';
+  }
+}
+function showWaliData(type){
+  if(!$('waliCombined'))return;
+  $('waliCombined').innerHTML=renderWaliData(type);
+}
+function renderWaliData(type){
+  const s=currentStudent;
+  if(!s)return '';
+  const isTah=type==='tahfidz';
+  const title=isTah?'📖 Data Tahfidz':'📚 Data Al-Qur\'an';
+  const rows=isTah?currentTahfiz:currentPelajaran;
+  let html='';
+  if(isTah){
+    html=rows.length?rows.map(function(t){
+      const ms=t.mulai_surah||t.surah||'-';
+      const ma=t.mulai_ayat??t.ayat??'-';
+      const ss=t.sampai_surah||t.surah||'-';
+      const sa=t.sampai_ayat??t.ayat??'-';
+      return '<div class="wali-report"><div><b>📅 '+safe(t.bulan||'-')+'</b><div>Mulai: '+safe(ms)+' ayat '+safe(ma)+' → Sampai: '+safe(ss)+' ayat '+safe(sa)+'</div><small>'+safe(t.keterangan||'-')+'</small></div></div>';
+    }).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
+  }else{
+    html=rows.length?rows.map(function(p){return '<div class="wali-report"><div><b>📅 '+formatTanggal(p.tanggal)+'</b><div>'+safe(p.materi||'-')+'</div></div><strong class="score">'+safe(p.nilai??'-')+'</strong></div>';}).join(''):'<div class="empty">Belum ada data Al-Qur\'an.</div>';
+  }
+  return '<div class="card wali-data-card"><div class="card-head"><div><h2 class="section-title">'+title+'</h2><p class="muted">'+safe(s.nama||'-')+' — Kelas '+safe(s.kelas||'-')+'</p></div><button class="blue" onclick="printWaliData(\''+type+'\')">🖨️ Print</button></div>'+html+'</div>';
+}
+function renderCombined(s,tah,pel,isWali){
+  const tahHTML=tah.length?tah.map(function(t){
+    const ms=t.mulai_surah||t.surah||'-';
+    const ma=t.mulai_ayat??t.ayat??'-';
+    const ss=t.sampai_surah||t.surah||'-';
+    const sa=t.sampai_ayat??t.ayat??'-';
+    return '<div class="report-box"><div class="report-month">📅 '+safe(t.bulan||'-')+'</div><div class="item"><b>Mulai:</b> '+safe(ms)+' ayat '+safe(ma)+'</div><div class="item"><b>Sampai:</b> '+safe(ss)+' ayat '+safe(sa)+'</div><div class="item"><b>Keterangan:</b> '+safe(t.keterangan||'-')+'</div></div>';
+  }).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
+  const pelHTML=pel.length?'<div class="table-wrap"><table><tr><th>Tanggal</th><th>Materi</th><th>Nilai</th></tr>'+pel.map(function(p){return '<tr><td>'+formatTanggal(p.tanggal)+'</td><td>'+safe(p.materi||'-')+'</td><td class="score">'+safe(p.nilai??'-')+'</td></tr>';}).join('')+'</table></div>':'<div class="empty">Belum ada data Al-Qur\'an.</div>';
+  const printFn=isWali?'printWaliCombined()':'printStudentDashboard()';
+  return '<hr><div class="actions" style="margin-bottom:12px"><button class="blue" onclick="'+printFn+'">🖨️ Print Data</button></div><div class="grid2"><div class="panel"><h2>📖 Data Tahfidz</h2>'+tahHTML+'</div><div class="panel"><h2>📚 Data Al-Qur\'an</h2>'+pelHTML+'</div></div>';
+}
+async function loadAdmin(){try{const {data,error}=await db.from('siswa').select('*').order('nama');if(error)throw error;students=data||[];$('total').textContent=students.length;$('laki').textContent=students.filter(x=>x.jk==='Laki-laki').length;$('perempuan').textContent=students.filter(x=>x.jk==='Perempuan').length;$('totalKelas').textContent=getClasses().length;await loadAllReports();renderDashboard();renderClasses();renderEditStudents()}catch(e){alert('Gagal memuat data siswa: '+(e.message||e))}}
+async function loadAllReports(){const tah=await db.from('tahfiz').select('*').order('id',{ascending:false});const pel=await db.from('pelajaran_quran').select('*').order('tanggal',{ascending:false});allTahfiz=tah.error?[]:(tah.data||[]);allPelajaran=pel.error?[]:(pel.data||[])}
+function getClasses(){return [...new Set(students.map(s=>s.kelas).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true}))}
+function renderDashSearch(){if(!$('dashSearch'))return;const q=v('dashSearch').toLowerCase();const arr=students.filter(function(s){return (s.nama||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q);}).slice(0,5);$('dashSearchResults').innerHTML=q?(arr.length?'<div class="dash-results">'+arr.map(function(s){return '<div class="student-item"><div><div class="student-name">'+safe(s.nama)+'</div><span class="badge">Kelas '+safe(s.kelas||'-')+'</span></div><button class="small" onclick="goAdmin(\'pencarian\');openStudent('+Number(s.id)+')">Lihat Data</button></div>';}).join('')+'</div>':'<div class="empty">Siswa tidak ditemukan.</div>'):'';}
+function renderDashboard(){
+  const classes=getClasses();
+  $('dashboardClasses').innerHTML=classes.length?'<div class="table-wrap"><table><tr><th>No</th><th>Kelas</th><th>Jumlah</th><th>Aksi</th></tr>'+
+    classes.map(function(c,i){return '<tr><td>'+(i+1)+'</td><td>'+safe(c)+'</td><td>'+students.filter(function(s){return s.kelas===c;}).length+' siswa</td><td><button class="small" onclick="goAdmin(\'kelas\');openClass(\''+encodeURIComponent(c)+'\')">Lihat</button></td></tr>';}).join('')+
+    '</table></div>':'<div class="empty">Belum ada kelas.</div>';
+}
+function renderClasses(){const classes=getClasses();$('classList').innerHTML=classes.length?classes.map(c=>`<div class="class-item" onclick="openClass('${encodeURIComponent(c)}')"><b>🏫 Kelas ${safe(c)}</b><br>${students.filter(s=>s.kelas===c).length} siswa</div>`).join(''):'<div class="empty">Belum ada data kelas.</div>'}
+async function openClass(encoded){const kelas=decodeURIComponent(encoded);currentClass=kelas;$('classTitle').textContent='🏫 Kelas '+kelas;const list=students.filter(s=>s.kelas===kelas);$('classData').innerHTML='<div class="empty">Memuat data Tahfidz dan Al-Qur’an...</div>';classDashboardData=[];for(const s of list){const tah=await db.from('tahfiz').select('*').eq('siswa_id',Number(s.id)).order('id',{ascending:false});const pel=await db.from('pelajaran_quran').select('*').eq('siswa_id',Number(s.id)).order('tanggal',{ascending:false});classDashboardData.push({student:s,tahfiz:tah.data||[],pelajaran:pel.data||[]})}$('classData').innerHTML=renderClassData(kelas,classDashboardData)}
+function renderClassData(kelas,rows){
+  if(!rows.length)return '<div class="empty">Tidak ada siswa di kelas ini.</div>';
+  return '<div class="notice"><b>'+rows.length+' siswa</b> di kelas '+safe(kelas)+'</div>'+rows.map(function(r){
+    const tah=r.tahfiz.length?r.tahfiz.map(function(t){return '<div class="item">📅 '+safe(t.bulan||'-')+' — '+safe(t.mulai_surah||'-')+' ayat '+safe(t.mulai_ayat||'-')+' s/d '+safe(t.sampai_surah||'-')+' ayat '+safe(t.sampai_ayat||'-')+'<br><small>'+safe(t.keterangan||'-')+'</small></div>';}).join(''):'<div class="empty">Belum ada.</div>';
+    const pel=r.pelajaran.length?r.pelajaran.map(function(p){return '<div class="item">'+formatTanggal(p.tanggal)+' — '+safe(p.materi||'-')+' — <b>'+safe(p.nilai??'-')+'</b></div>';}).join(''):'<div class="empty">Belum ada.</div>';
+    return '<div class="report-box"><h3>👦 '+safe(r.student.nama)+'</h3><div class="grid2"><div><b>📖 Tahfidz</b>'+tah+'</div><div><b>📚 Al-Qur\'an</b>'+pel+'</div></div></div>';
+  }).join('');
+}
+function renderStudentSearch(){const q=v('studentSearch').toLowerCase();const arr=students.filter(s=>(s.nama||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q));$('studentSearchList').innerHTML=arr.length?arr.map(s=>`<div class="student-item"><div><div class="student-name">${safe(s.nama)}</div><span class="badge">Kelas ${safe(s.kelas||'-')}</span></div><button class="small" onclick="openStudent(${Number(s.id)})">Lihat Data</button></div>`).join(''):'<div class="empty">Siswa tidak ditemukan.</div>'}
+async function openStudent(id){const s=students.find(x=>Number(x.id)===Number(id));if(!s)return;const tah=await db.from('tahfiz').select('*').eq('siswa_id',Number(id)).order('id',{ascending:false});const pel=await db.from('pelajaran_quran').select('*').eq('siswa_id',Number(id)).order('tanggal',{ascending:false});currentStudent=s;currentTahfiz=tah.data||[];currentPelajaran=pel.data||[];$('studentDashboard').classList.remove('hidden');$('studentDashboardContent').innerHTML=`<div class="student-head"><h2>👦 ${safe(s.nama)}</h2><span class="badge">Kelas ${safe(s.kelas||'-')}</span></div>${renderCombined(s,currentTahfiz,currentPelajaran,false)}`;$('studentDashboard').scrollIntoView({behavior:'smooth',block:'start'})}
+function closeStudentDashboard(){$('studentDashboard').classList.add('hidden')}
+function studentOptions(selected){return students.map(function(s){return '<option value="'+Number(s.id)+'" '+(Number(selected)===Number(s.id)?'selected':'')+'>'+safe(s.nama)+' — Kelas '+safe(s.kelas||'-')+'</option>';}).join('')}
+function setupStudentPicker(prefix,selected){
+  const s=students.find(x=>Number(x.id)===Number(selected));
+  $(prefix+'Siswa').value=s?s.id:'';
+  $(prefix+'SiswaSearch').value='';
+  $(prefix+'SiswaSelected').classList.toggle('hidden',!s);
+  if(s) $(prefix+'SiswaSelected').innerHTML='✓ '+safe(s.nama)+' <span class="badge">Kelas '+safe(s.kelas||'-')+'</span><button type="button" class="picker-clear" onclick="clearStudentPicker(\''+prefix+'\')">×</button>';
+  $(prefix+'SiswaResults').innerHTML='';
+}
+function filterStudentPicker(prefix){
+  const q=$(prefix+'SiswaSearch').value.toLowerCase().trim();
+  const arr=students.filter(function(s){return !q||(s.nama||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q);}).slice(0,8);
+  $(prefix+'SiswaResults').innerHTML=arr.map(function(s){return '<button type="button" class="picker-option" onclick="chooseStudent(\''+prefix+'\','+Number(s.id)+')"><span>'+safe(s.nama)+'</span><small>Kelas '+safe(s.kelas||'-')+'</small></button>';}).join('');
+}
+function chooseStudent(prefix,id){setupStudentPicker(prefix,id);$(prefix+'SiswaSearch').blur();}
+function clearStudentPicker(prefix){setupStudentPicker(prefix,'');$(prefix+'SiswaSearch').focus();filterStudentPicker(prefix)}
+function renderTahfizPage(){
+  const q=v('tahfizSearch').toLowerCase();
+  const arr=students.filter(function(s){return (s.nama||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q);});
+  $('tahfizPageList').innerHTML=arr.map(function(s){
+    const rows=allTahfiz.filter(function(t){return Number(t.siswa_id)===Number(s.id);});
+    const body=rows.length?rows.map(function(t){return '<div class="report-row"><div class="report-info"><b>📅 '+safe(t.bulan||'-')+'</b><br><span>Mulai: '+safe(t.mulai_surah||'-')+' ayat '+safe(t.mulai_ayat||'-')+'</span> → <span>Sampai: '+safe(t.sampai_surah||'-')+' ayat '+safe(t.sampai_ayat||'-')+'</span><br><small>'+safe(t.keterangan||'-')+'</small></div><div class="report-actions"><button class="small action-edit" onclick="editTahfiz('+Number(t.id)+')">✏️ Edit</button><button class="small action-delete" onclick="deleteTahfiz('+Number(t.id)+')">🗑️ Hapus</button></div></div>';}).join(''):'<div class="empty">Belum ada laporan Tahfidz untuk siswa ini.</div>';
+    return '<div class="report-box"><h3>👦 '+safe(s.nama)+' <span class="badge">Kelas '+safe(s.kelas||'-')+'</span></h3>'+body+'</div>';
+  }).join('')||'<div class="empty">Siswa tidak ditemukan.</div>';
+}
+function renderPelajaranPage(){
+  const q=v('alquranSearch').toLowerCase();
+  const arr=students.filter(function(s){return (s.nama||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q);});
+  $('alquranPageList').innerHTML=arr.map(function(s){
+    const rows=allPelajaran.filter(function(p){return Number(p.siswa_id)===Number(s.id);});
+    const body=rows.length?rows.map(function(p){return '<div class="alquran-report-row"><div class="alquran-date"><span>📅</span><b>'+formatTanggal(p.tanggal)+'</b></div><div class="alquran-detail"><b>'+safe(p.materi||'-')+'</b><small>Materi pembelajaran Al-Qur\'an</small></div><div class="alquran-score"><span>Nilai</span><strong>'+safe(p.nilai??'-')+'</strong></div><div class="report-actions"><button class="small action-edit" onclick="editPelajaran('+Number(p.id)+')">✏️ Edit</button><button class="small action-delete" onclick="deletePelajaran('+Number(p.id)+')">🗑️ Hapus</button></div></div>';}).join(''):'<div class="empty">Belum ada laporan Al-Qur\'an untuk siswa ini.</div>';
+    return '<div class="report-box alquran-student"><div class="student-report-head"><div><h3>👦 '+safe(s.nama)+'</h3><span class="badge">Kelas '+safe(s.kelas||'-')+'</span></div><span class="report-count">'+rows.length+' laporan</span></div>'+body+'</div>';
+  }).join('')||'<div class="empty">Siswa tidak ditemukan.</div>';
+}
+function newTahfiz(){
+  $('tahfizFormCard').classList.remove('hidden');$('tahfizFormTitle').textContent='➕ Tambah Laporan Tahfidz';$('tahfizId').value='';setupStudentPicker('tahfiz','');$('tahfizBulan').value='';$('tahfizMulaiSurah').value='';$('tahfizMulaiAyat').value='';$('tahfizSampaiSurah').value='';$('tahfizSampaiAyat').value='';$('tahfizKeterangan').value='';$('tahfizError').style.display='none';$('tahfizOk').style.display='none';$('tahfizFormCard').scrollIntoView({behavior:'smooth'});
+}
+function editTahfiz(id){const t=allTahfiz.find(x=>Number(x.id)===Number(id));if(!t)return;newTahfiz();$('tahfizFormTitle').textContent='✏️ Edit Laporan Tahfidz';$('tahfizId').value=t.id;setupStudentPicker('tahfiz',t.siswa_id);$('tahfizBulan').value=t.bulan||'';$('tahfizMulaiSurah').value=t.mulai_surah||'';$('tahfizMulaiAyat').value=t.mulai_ayat??'';$('tahfizSampaiSurah').value=t.sampai_surah||'';$('tahfizSampaiAyat').value=t.sampai_ayat??'';$('tahfizKeterangan').value=t.keterangan||'';}
+function cancelTahfizForm(){$('tahfizFormCard').classList.add('hidden')}
+async function saveTahfiz(){const p={siswa_id:Number(v('tahfizSiswa')),bulan:v('tahfizBulan'),mulai_surah:v('tahfizMulaiSurah'),mulai_ayat:v('tahfizMulaiAyat'),sampai_surah:v('tahfizSampaiSurah'),sampai_ayat:v('tahfizSampaiAyat'),keterangan:v('tahfizKeterangan')};if(!p.siswa_id){$('tahfizError').style.display='block';$('tahfizError').textContent='Pilih siswa terlebih dahulu.';return}try{const id=v('tahfizId');const res=id?await db.from('tahfiz').update(p).eq('id',id):await db.from('tahfiz').insert(p);if(res.error)throw res.error;$('tahfizError').style.display='none';$('tahfizOk').style.display='block';$('tahfizOk').textContent=id?'Laporan Tahfidz berhasil diperbarui.':'Laporan Tahfidz baru berhasil ditambahkan.';await loadAllReports();renderTahfizPage();setTimeout(cancelTahfizForm,500);}catch(e){$('tahfizError').style.display='block';$('tahfizError').textContent=e.message||'Gagal menyimpan laporan Tahfidz.'}}
+async function deleteTahfiz(id){if(!confirm('Hapus laporan Tahfidz ini?'))return;const res=await db.from('tahfiz').delete().eq('id',id);if(res.error)alert(res.error.message||'Gagal menghapus laporan.');else{await loadAllReports();renderTahfizPage();}}
+function newPelajaran(){$('alquranFormCard').classList.remove('hidden');$('alquranFormTitle').textContent='➕ Tambah Laporan Al-Qur\'an';$('alquranId').value='';setupStudentPicker('alquran','');$('alquranTanggal').value=new Date().toISOString().slice(0,10);$('alquranMateri').value='';$('alquranNilai').value='';$('alquranError').style.display='none';$('alquranOk').style.display='none';$('alquranFormCard').scrollIntoView({behavior:'smooth'});}
+function editPelajaran(id){const p=allPelajaran.find(x=>Number(x.id)===Number(id));if(!p)return;newPelajaran();$('alquranFormTitle').textContent='✏️ Edit Laporan Al-Qur\'an';$('alquranId').value=p.id;setupStudentPicker('alquran',p.siswa_id);$('alquranTanggal').value=p.tanggal||'';$('alquranMateri').value=p.materi||'';$('alquranNilai').value=p.nilai??'';}
+function cancelPelajaranForm(){$('alquranFormCard').classList.add('hidden')}
+async function savePelajaran(){const p={siswa_id:Number(v('alquranSiswa')),tanggal:v('alquranTanggal'),materi:v('alquranMateri'),nilai:v('alquranNilai')};if(!p.siswa_id||!p.tanggal||!p.materi){$('alquranError').style.display='block';$('alquranError').textContent='Siswa, tanggal, dan materi wajib diisi.';return}try{const id=v('alquranId');const res=id?await db.from('pelajaran_quran').update(p).eq('id',id):await db.from('pelajaran_quran').insert(p);if(res.error)throw res.error;$('alquranError').style.display='none';$('alquranOk').style.display='block';$('alquranOk').textContent=id?'Laporan Al-Qur\'an berhasil diperbarui.':'Laporan Al-Qur\'an baru berhasil ditambahkan.';await loadAllReports();renderPelajaranPage();setTimeout(cancelPelajaranForm,500);}catch(e){$('alquranError').style.display='block';$('alquranError').textContent=e.message||'Gagal menyimpan laporan Al-Qur\'an.'}}
+async function deletePelajaran(id){if(!confirm('Hapus laporan Al-Qur\'an ini?'))return;const res=await db.from('pelajaran_quran').delete().eq('id',id);if(res.error)alert(res.error.message||'Gagal menghapus laporan.');else{await loadAllReports();renderPelajaranPage();}}
+function renderEditStudents(){const q=v('editSearch').toLowerCase();const arr=students.filter(s=>(s.nama||'').toLowerCase().includes(q)||(s.kelas||'').toLowerCase().includes(q));$('editStudentList').innerHTML=arr.length?arr.map(s=>`<div class="student-item"><div><div class="student-name">${safe(s.nama)}</div><span class="badge">Kelas ${safe(s.kelas||'-')}</span></div><button class="small" onclick="editStudent(${Number(s.id)})">Edit</button></div>`).join(''):'<div class="empty">Siswa tidak ditemukan.</div>'}
+function editStudent(id){const s=students.find(x=>Number(x.id)===Number(id));if(!s)return;$('sid').value=s.id||'';$('nama').value=s.nama||'';$('kelas').value=s.kelas||'';$('jk').value=s.jk||'Laki-laki';$('pin').value=s.pin||'';$('ttl').value=s.ttl||'';$('alamat').value=s.alamat||'';$('ayah').value=s.ayah||'';$('ibu').value=s.ibu||'';$('formtitle').textContent='✏️ Edit Data: '+s.nama;$('formtitle').scrollIntoView({behavior:'smooth',block:'start'})}
+function clearForm(){['sid','nama','kelas','pin','ttl','alamat','ayah','ibu'].forEach(id=>$(id).value='');$('jk').value='Laki-laki';$('formtitle').textContent='➕ Tambah / Edit Siswa'}
+async function saveStudent(){const p={nama:v('nama'),kelas:v('kelas'),jk:v('jk'),pin:v('pin'),ttl:v('ttl'),alamat:v('alamat'),ayah:v('ayah'),ibu:v('ibu')};if(!p.nama||!p.pin){$('ae').style.display='block';$('ae').textContent='Nama dan PIN wajib diisi.';return}try{const id=v('sid');const res=id?await db.from('siswa').update(p).eq('id',id):await db.from('siswa').insert(p);if(res.error)throw res.error;$('ae').style.display='none';$('ok').style.display='block';$('ok').textContent='Data siswa berhasil disimpan.';clearForm();await loadAdmin();goAdmin('edit')}catch(e){$('ae').style.display='block';$('ae').textContent=e.message||'Gagal menyimpan data.'}}
+function setPrintArea(title,content){$('printArea').innerHTML=`<div style="text-align:center;margin-bottom:20px"><h2>SDIT AN-NAHL SERI KUALA LOBAM</h2><h3>${safe(title)}</h3></div>${content}`;window.print()}
+function printWaliData(type){if(!currentStudent)return;setPrintArea(type==='tahfidz'?'DATA TAHFIDZ':'DATA AL-QURAN','<h3>'+safe(currentStudent.nama)+'</h3><p>Kelas: '+safe(currentStudent.kelas||'-')+'</p>'+renderWaliData(type));}
+function printStudentDashboard(){if(!currentStudent){alert('Pilih siswa terlebih dahulu.');return}setPrintArea('DATA TAHFIDZ & AL-QURAN SISWA',`<h3>${safe(currentStudent.nama)}</h3><p>Kelas: ${safe(currentStudent.kelas||'-')}</p>${renderCombined(currentStudent,currentTahfiz,currentPelajaran,false)}`)}
+function printWaliCombined(){if(!currentStudent)return;setPrintArea('DATA TAHFIDZ & AL-QURAN',`<h3>${safe(currentStudent.nama)}</h3><p>Kelas: ${safe(currentStudent.kelas||'-')}</p>${renderCombined(currentStudent,currentTahfiz,currentPelajaran,true)}`)}
+function printClassDashboard(){if(!currentClass||!classDashboardData.length){alert('Pilih kelas terlebih dahulu.');return}setPrintArea('DASHBOARD DATA KELAS',`<h2>Kelas ${safe(currentClass)}</h2><p>Jumlah siswa: ${classDashboardData.length}</p>${renderClassData(currentClass,classDashboardData)}`)}
+function printTahfizPage(){setPrintArea('DATA TAHFIDZ',$('tahfizPageList').innerHTML)} function printPelajaranPage(){setPrintArea("DATA AL-QUR'AN",$('alquranPageList').innerHTML)}
+// Cek otomatis: halaman tetap bisa dibuka walaupun koneksi Supabase sedang lambat.
+window.addEventListener('error',e=>{console.error(e.error||e.message)});
+window.addEventListener('DOMContentLoaded', function(){
+    try{
+        if(!initSupabase()){
+            throw new Error('Library Supabase tidak berhasil dimuat. Periksa koneksi internet.');
+        }
+    }catch(err){
+        console.error(err);
+        const box=document.getElementById('startupError');
+        const msg=document.getElementById('startupErrorText');
+        if(box){
+            box.style.display='block';
+            if(msg) msg.textContent=err.message||'Terjadi kesalahan saat memulai aplikasi.';
+        }
+    }
+});</script>
+</body></html>
