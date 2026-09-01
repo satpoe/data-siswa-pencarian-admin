@@ -61,7 +61,42 @@ function showPublic(id){['home','wali','login'].forEach(x=>$(x).classList.add('h
 async function adminLogin(){const email=v('email'),password=$('password').value;if(!email||!password){$('le').style.display='block';$('le').textContent='Email dan password wajib diisi.';return}try{const {error}=await db.auth.signInWithPassword({email,password});if(error)throw error;$('le').style.display='none';$('publicApp').classList.add('hidden');$('adminApp').classList.remove('hidden');await loadAdmin();goAdmin('dashboard')}catch(e){$('le').style.display='block';$('le').textContent=e.message||'Login gagal.'}}
 async function logout(){await db.auth.signOut();$('adminApp').classList.add('hidden');$('publicApp').classList.remove('hidden');showPublic('home')}
 function goAdmin(page){document.querySelectorAll('.content-page').forEach(x=>x.classList.remove('active'));const target=$('page-'+page);if(target)target.classList.add('active');document.querySelectorAll('.side-btn[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===page));const titles={dashboard:['Dashboard Utama','Ringkasan data siswa'],kelas:['Data Kelas','Jumlah dan daftar siswa berdasarkan kelas'],tahfidz:['Data Tahfidz','Laporan hafalan setiap siswa'],alquran:['Data Al-Qur\'an','Data pelajaran dan nilai setiap siswa'],edit:['Edit Data Siswa','Ubah data siswa dan PIN']};if(titles[page]){$('pageTitle').textContent=titles[page][0];$('pageSub').textContent=titles[page][1]}if(page==='kelas')renderClasses();if(page==='tahfidz')renderTahfizPage();if(page==='alquran')renderPelajaranPage();if(page==='edit')renderEditStudents();window.scrollTo(0,0)}
-async function waliLogin(){const e=$('we'),r=$('wresult');e.style.display='none';r.innerHTML='';const name=v('wnama'),pin=v('wpin');if(!name||!pin){e.style.display='block';e.textContent='Nama dan PIN wajib diisi.';return}try{const {data,error}=await db.rpc('cari_data_wali',{p_nama:name,p_pin:pin});const x=data&&data[0];if(error||!x){e.style.display='block';e.textContent='Nama atau PIN salah.';return}currentStudent=x;const tah=await db.rpc('cari_tahfiz_wali',{p_nama:name,p_pin:pin});currentTahfiz=tah.data||[];const pel=await db.from('pelajaran_quran').select('*').eq('siswa_id',Number(x.id)).order('tanggal',{ascending:false});currentPelajaran=pel.error?[]:(pel.data||[]);r.innerHTML=`<div class="student-head"><h2>👦 ${safe(x.nama)}</h2><span class="badge">Kelas ${safe(x.kelas||'-')}</span></div><h2 class="center">Data Anak</h2><p class="center">Data Tahfidz dan Al-Qur\'an.</p><div class="choice-grid"><button class="choice" onclick="showWaliData('tahfidz')">📖<br><b>Data Tahfidz</b><small>Lihat hafalan</small></button><button class="choice" onclick="showWaliData('alquran')">📚<br><b>Data Al-Qur\'an</b><small>Lihat pembelajaran</small></button></div><div id="waliCombined"></div>`}catch(err){e.style.display='block';e.textContent='Terjadi kesalahan saat mengambil data.'}}
+async function waliLogin(){
+  const e=$('we'),r=$('wresult');
+  e.style.display='none';r.innerHTML='';
+  const name=v('wnama'),pin=v('wpin');
+  if(!name||!pin){e.style.display='block';e.textContent='Nama dan PIN wajib diisi.';return}
+  try{
+    const wali=await db.rpc('cari_data_wali',{p_nama:name,p_pin:pin});
+    if(wali.error) throw wali.error;
+    const x=wali.data&&wali.data[0];
+    if(!x){e.style.display='block';e.textContent='Nama atau PIN salah.';return}
+
+    currentStudent=x;
+
+    const tah=await db.rpc('cari_tahfiz_wali',{p_nama:name,p_pin:pin});
+    if(tah.error) throw tah.error;
+    currentTahfiz=tah.data||[];
+
+    const pel=await db.from('pelajaran_quran').select('*').eq('siswa_id',Number(x.id)).order('tanggal',{ascending:false});
+    if(pel.error) throw pel.error;
+    currentPelajaran=pel.data||[];
+
+    r.innerHTML='<div class="student-head"><h2>👦 '+safe(x.nama)+'</h2><span class="badge">Kelas '+safe(x.kelas||'-')+'</span></div>'+
+      '<h2 class="center">Data Anak</h2><p class="center">Data Tahfidz dan Al-Qur\'an.</p>'+
+      '<div class="choice-grid">'+
+      '<button class="choice" onclick="showWaliData(\'tahfidz\')">📖<br><b>Data Tahfidz</b><small>'+currentTahfiz.length+' laporan — lihat hafalan</small></button>'+
+      '<button class="choice" onclick="showWaliData(\'alquran\')">📚<br><b>Data Al-Qur\'an</b><small>'+currentPelajaran.length+' laporan — lihat pembelajaran</small></button>'+
+      '</div><div id="waliCombined"></div>';
+
+    // Langsung tampilkan kedua jenis data setelah login wali berhasil.
+    $('waliCombined').innerHTML=renderCombined(currentStudent,currentTahfiz,currentPelajaran,true);
+  }catch(err){
+    console.error(err);
+    e.style.display='block';
+    e.textContent=err.message||'Terjadi kesalahan saat mengambil data.';
+  }
+}
 function showWaliData(type){
   if(!$('waliCombined'))return;
   $('waliCombined').innerHTML=renderWaliData(type);
@@ -74,14 +109,26 @@ function renderWaliData(type){
   const rows=isTah?currentTahfiz:currentPelajaran;
   let html='';
   if(isTah){
-    html=rows.length?rows.map(function(t){return '<div class="wali-report"><div><b>📅 '+safe(t.bulan||'-')+'</b><div>Mulai: '+safe(t.mulai_surah||'-')+' ayat '+safe(t.mulai_ayat||'-')+' → Sampai: '+safe(t.sampai_surah||'-')+' ayat '+safe(t.sampai_ayat||'-')+'</div><small>'+safe(t.keterangan||'-')+'</small></div></div>';}).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
+    html=rows.length?rows.map(function(t){
+      var mulaiSurah=t.mulai_surah||t.surah||'-';
+      var mulaiAyat=t.mulai_ayat??t.ayat??'-';
+      var sampaiSurah=t.sampai_surah||t.surah||'-';
+      var sampaiAyat=t.sampai_ayat??t.ayat??'-';
+      return '<div class="wali-report"><div><b>📅 '+safe(t.bulan||'-')+'</b><div>Mulai: '+safe(mulaiSurah)+' ayat '+safe(mulaiAyat)+' → Sampai: '+safe(sampaiSurah)+' ayat '+safe(sampaiAyat)+'</div><small>'+safe(t.keterangan||'-')+'</small></div></div>';
+    }).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
   }else{
     html=rows.length?rows.map(function(p){return '<div class="wali-report"><div><b>📅 '+formatTanggal(p.tanggal)+'</b><div>'+safe(p.materi||'-')+'</div></div><strong class="score">'+safe(p.nilai??'-')+'</strong></div>';}).join(''):'<div class="empty">Belum ada data Al-Qur\'an.</div>';
   }
   return '<div class="card wali-data-card"><div class="card-head"><div><h2 class="section-title">'+title+'</h2><p class="muted">'+safe(s.nama)+' — Kelas '+safe(s.kelas||'-')+'</p></div><button class="blue" onclick="printWaliData(\''+type+'\')">🖨️ Print</button></div>'+html+'</div>';
 }
 function renderCombined(s,tah,pel,isWali){
-  const tahHTML=tah.length?tah.map(function(t){return '<div class="report-box"><div class="report-month">📅 '+safe(t.bulan||'-')+'</div><div class="item"><b>Mulai:</b> '+safe(t.mulai_surah||'-')+' ayat '+safe(t.mulai_ayat||'-')+'</div><div class="item"><b>Sampai:</b> '+safe(t.sampai_surah||'-')+' ayat '+safe(t.sampai_ayat||'-')+'</div><div class="item"><b>Keterangan:</b> '+safe(t.keterangan||'-')+'</div></div>';}).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
+  const tahHTML=tah.length?tah.map(function(t){
+    var mulaiSurah=t.mulai_surah||t.surah||'-';
+    var mulaiAyat=t.mulai_ayat??t.ayat??'-';
+    var sampaiSurah=t.sampai_surah||t.surah||'-';
+    var sampaiAyat=t.sampai_ayat??t.ayat??'-';
+    return '<div class="report-box"><div class="report-month">📅 '+safe(t.bulan||'-')+'</div><div class="item"><b>Mulai:</b> '+safe(mulaiSurah)+' ayat '+safe(mulaiAyat)+'</div><div class="item"><b>Sampai:</b> '+safe(sampaiSurah)+' ayat '+safe(sampaiAyat)+'</div><div class="item"><b>Keterangan:</b> '+safe(t.keterangan||'-')+'</div></div>';
+  }).join(''):'<div class="empty">Belum ada data Tahfidz.</div>';
   const pelHTML=pel.length?'<div class="table-wrap"><table><tr><th>Tanggal</th><th>Materi</th><th>Nilai</th></tr>'+pel.map(function(p){return '<tr><td>'+formatTanggal(p.tanggal)+'</td><td>'+safe(p.materi||'-')+'</td><td class="score">'+safe(p.nilai??'-')+'</td></tr>';}).join('')+'</table></div>':'<div class="empty">Belum ada data Al-Qur\'an.</div>';
   const printFn=isWali?'printWaliCombined()':'printStudentDashboard()';
   return '<hr><div class="actions" style="margin-bottom:12px"><button class="blue" onclick="'+printFn+'">🖨️ Print Data</button></div><div class="grid2"><div class="panel"><h2>📖 Data Tahfidz</h2>'+tahHTML+'</div><div class="panel"><h2>📚 Data Al-Qur\'an</h2>'+pelHTML+'</div></div>';
@@ -182,4 +229,5 @@ window.addEventListener('DOMContentLoaded', function(){
         }
     }
 });</script>
+<div id="appVersion" style="display:none">Perbaikan pencarian wali</div>
 </body></html>
